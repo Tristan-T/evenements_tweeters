@@ -1,0 +1,5 @@
+Geoname API -> REST based
+Module Python -> geopy
+Nécessaire d'activer "free web service" dans l'interface utilisateur de geoname
+
+Avantage de geopy : Permet d'utiliser plusieurs services
