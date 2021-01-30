@@ -1,0 +1,4 @@
+Python et MongoDB
+Drivers natif PyMongo
+pip install pymongo
+Il faut aussi le module dnspython
