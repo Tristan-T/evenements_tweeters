@@ -1,0 +1,17 @@
+.reglage{
+	display: flex;
+ 	flex-direction: row;
+
+ 	background-color: #47474c;
+}
+
+.buttons{
+	height: 100px;
+	
+	color : white;
+	display: flex;
+	flex-flow : column wrap;
+}
+
+
+
