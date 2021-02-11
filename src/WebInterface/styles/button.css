@@ -6,12 +6,12 @@
 }
 
 .buttons{
-	height: 100px;
 	
 	color : white;
 	display: flex;
-	flex-flow : column wrap;
+	flex-flow: column wrap;
 }
+
 
 
 
