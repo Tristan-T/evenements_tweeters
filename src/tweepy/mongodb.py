@@ -30,15 +30,31 @@ Elle prends en paramètre :
         - La date de publication du tweet (convertissable en objet Date)
         - La location GPS du tweet (longitude puis latitude)
 """
-def addTweetDB(idTweet, jsonData, date, location):
+def addTweetRealTimeDB(idTweet, text, disasterType, url, jsonData, date, location):
         d = datetime.datetime.strptime("2021-02-07T16:44:53", "%Y-%m-%dT%H:%M:%S")
         
-        tweetRealtime.insert_one({
+        tweetRealTime.insert_one({
             "_id": str(idTweet),
+            "text": text,
+            "disasterType": disasterType,
+            "url": url,
             "json": jsonData,
-            "date": d,
-            "location": {"lng":-73.41 , "lat":40.764}
-        }) 
+            "date": date,
+            "location": {"lng":-73.41 , "lat":40.764},
+        })
+
+def addTweetValideDB(idTweet, text, disasterType, url, jsonData, date, location):
+        d = datetime.datetime.strptime("2021-02-07T16:44:53", "%Y-%m-%dT%H:%M:%S")
+
+        tweetValide.insert_one({
+                "_id": str(idTweet),
+                "text": text,
+                "disasterType": disasterType,
+                "url": url,
+                "json": jsonData,
+                "date": d,
+                "location": {"lng":-73.41 , "lat":40.764},
+}) 
         
 
 #print(serverStatusResult)
