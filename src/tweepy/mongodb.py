@@ -43,7 +43,7 @@ def addTweetRealTimeDB(idTweet, text, disasterType, url, jsonData, date, locatio
             "location": {"lng":-73.41 , "lat":40.764},
         })
 
-def addTweetValideDB(idTweet, text, disasterType, url, jsonData, date, location):
+def addTweetValideDB(idTweet, text, disasterType, url, jsonData, date, locations):
         d = datetime.datetime.strptime("2021-02-07T16:44:53", "%Y-%m-%dT%H:%M:%S")
 
         tweetValide.insert_one({
@@ -52,8 +52,9 @@ def addTweetValideDB(idTweet, text, disasterType, url, jsonData, date, location)
                 "disasterType": disasterType,
                 "url": url,
                 "json": jsonData,
-                "date": d,
-                "location": {"lng":-73.41 , "lat":40.764},
+                "date": date,
+                "locations": locations,
+                "validated": False
 }) 
         
 
