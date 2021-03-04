@@ -2,3 +2,20 @@ Python et MongoDB
 Drivers natif PyMongo
 pip install pymongo
 Il faut aussi le module dnspython
+
+On va stocker les tweets dans deux bases :
+Validés et normal :
+Chaque "table" possède 5 attributs :
+id(id mongodb = id tweet) / JSON / Date / GPS / Type catastrophe / Spacy
+
+Fonctions utiles :
+Ajouter un tweet (pas besoin de mdp)
+Ajouter un tweet validé (nécessite input manuel mdp)
+// Supprimer un tweet par ID (seulement à cause de CRUD)
+// Modifier un tweet (CRUD aussi, inutile)
+Récupérer tout les tweets
+Récupérer tout les tweets récents (-1 heure)
+Récupérer tout les tweets concernant une catastrophe
+Merger les deux fonctions précédentes (existe-t-il une manière élégante de le faire ?)
+
+Comment query la base sans mdp ?
