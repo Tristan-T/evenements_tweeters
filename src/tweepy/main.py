@@ -44,24 +44,24 @@ class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
         print(status.text)
-        # if (not(isRetweet(status))) :
-        #     words = status.text.split()
-        #     disasterType = ""
-        #     for keyWord in keyWords:
-        #         if keyWord in words:
-        #             disasterType = keyWord
-        #     url = "https://twitter.com/i/web/status/" + str(status.id)
-        #     locationsInTweet = getLocations(status.text)
-        #     if (len(locationsInTweet) == 1):
-        #         try :
-        #             location = geoname.getLocation(locationsInTweet[0])
-        #             mongodb.addTweetRealTimeDB(status.id, status.text, disasterType, url, status._json, status.created_at, location)
-        #         except NameError: 
-        #             mongodb.addTweetValideDB(status.id, status.text, disasterType, url, status._json, status.created_at, locationsInTweet)
-        #     elif (len(locationsInTweet) > 1):
-        #         mongodb.addTweetValideDB(status.id, status.text, disasterType, url, status._json, status.created_at, locationsInTweet)
-        #     else:
-        #         mongodb.addTweetValideDB(status.id, status.text, disasterType, url, status._json, status.created_at, None)
+        if (not(isRetweet(status))) :
+            words = status.text.split()
+            disasterType = ""
+            for keyWord in keyWords:
+                if keyWord in words:
+                    disasterType = keyWord
+            url = "https://twitter.com/i/web/status/" + str(status.id)
+            locationsInTweet = getLocations(status.text)
+            if (len(locationsInTweet) == 1):
+                try :
+                    location = geoname.getLocation(locationsInTweet[0])
+                    mongodb.addTweetRealTimeDB(status.id, status.text, disasterType, url, status._json, status.created_at, location)
+                except NameError: 
+                    mongodb.addTweetValideDB(status.id, status.text, disasterType, url, status._json, status.created_at, locationsInTweet)
+            elif (len(locationsInTweet) > 1):
+                mongodb.addTweetValideDB(status.id, status.text, disasterType, url, status._json, status.created_at, locationsInTweet)
+            else:
+                mongodb.addTweetValideDB(status.id, status.text, disasterType, url, status._json, status.created_at, None)
 
     def on_error(self, status_code):
         if status_code == 420:
@@ -74,4 +74,4 @@ api = tweepy.API(auth)
 
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
-myStream.filter(track=["#BTSNo1GlobalArtist"], is_async=True)
+myStream.filter(track=keyWords, is_async=True)
