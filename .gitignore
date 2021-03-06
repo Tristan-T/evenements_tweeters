@@ -1,2 +1,8 @@
 # Default ignored files
 /.idea/
+
+# Config file
+src/Python/config.json
+
+# Python cache
+__pycache__/

@@ -20,13 +20,11 @@ def getLocation(textLoc):
         # json.dump(location.raw, f, indent=4)
         # print(location.address)
         # print(location.point.format_unicode())
-        return {location.lng, location.lat}
+        print("Type of location.lng : " + str(type(location.lng)))
+        print("Type of float(location.lng) : " + str(type(float(location.lng))))
+        return [float(location.lng), float(location.lat)]
     else:
         print("Location non trouvée : " + textLoc)
         raise NameError("LocationNotFound")
 
 getLocation("Tadcaster (England)")
-getLocation("Pampa Bachongo")
-#getLocation("Barangay Matangkil")
-getLocation("Laurel Highlands")
-getLocation("Skewen")

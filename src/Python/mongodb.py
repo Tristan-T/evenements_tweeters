@@ -58,4 +58,4 @@ def addTweetValideDB(idTweet, text, disasterType, url, jsonData, date, locations
 }) 
         
 
-#print(serverStatusResult)
+print(serverStatusResult)

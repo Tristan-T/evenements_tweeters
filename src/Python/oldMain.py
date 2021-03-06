@@ -5,16 +5,18 @@ import spacy
 from pymongo import MongoClient, GEO2D
 import urllib
 import datetime
+
+
 import mongodb
 import geoname
 
 nlp = spacy.load("en_core_web_sm")
 
 keyWords = [
-"floodwater", 
+"floodwater",
 "Earthquake",
 "Volcanic Eruptions",
-"Volcanic Eruption", 
+"Volcanic Eruption",
 "volcanoes",
 "Hurricane",
 "Cyclone",
@@ -56,7 +58,7 @@ class MyStreamListener(tweepy.StreamListener):
                 try :
                     location = geoname.getLocation(locationsInTweet[0])
                     mongodb.addTweetRealTimeDB(status.id, status.text, disasterType, url, status._json, status.created_at, location)
-                except NameError: 
+                except NameError:
                     mongodb.addTweetValideDB(status.id, status.text, disasterType, url, status._json, status.created_at, locationsInTweet)
             elif (len(locationsInTweet) > 1):
                 mongodb.addTweetValideDB(status.id, status.text, disasterType, url, status._json, status.created_at, locationsInTweet)
@@ -67,6 +69,9 @@ class MyStreamListener(tweepy.StreamListener):
         if status_code == 420:
             #returning False in on_error disconnects the stream
             return True
+        else:
+            print("The status code is " + status_code)
+            return False
 
 
 auth = tweepy.OAuthHandler("AGkuOLBeI1fuvznbTuvClUxzY", "49rnsc86xjyIK4PYWqLDyDYvkpdh2R4L7IU1rej9djmHAWGXId")
