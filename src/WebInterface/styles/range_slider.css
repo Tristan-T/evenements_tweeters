@@ -1,22 +1,33 @@
 #slider_wrapper{
 	display : grid;
-	grid-template-rows: 5vh 90vh 5vh;
+	grid-template-rows: 5vh auto 5vh;
+	grid-template-columns: calc(5vw - 0.6rem);
 }
 #max{
 	grid-row: 1/2;
+	align-self: center;
+	justify-self: center;
+	border: 2px solid var(--main-lighter);
+	border-radius: 5px;
+	padding: 0.5rem 1rem;
 }
 
 .middle {
 	position: relative;
 	width: 90vh;
-	
 	grid-row: 2/3;
 	transform-origin: top left;
 	transform: rotate(-0.25turn) translate(-100%);
+	margin-left: calc(2.5vw - 10px);
 }
 
 #min{
 	grid-row: 3/4;
+	align-self: center;
+	justify-self: center;
+	border: 2px solid var(--main-lighter);
+	border-radius: 5px;
+	padding: 0.5rem 1rem;
 }
 
 

@@ -16,6 +16,7 @@ const extensions = {
     ".css" : "text/css",
     ".js" : "application/javascript",
     ".woff2" : "font/woff2",
+    ".ttf" : "font/ttf",
     ".png" : "image/png",
     ".gif" : "image/gif",
     ".jpg" : "image/jpeg"

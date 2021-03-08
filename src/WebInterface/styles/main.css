@@ -3,6 +3,11 @@
 	src: url(../assets/raleway.woff2);
 }
 
+@font-face {
+	font-family: Roboto;
+	src: url(../assets/Roboto-Light.ttf);
+}
+
 :root {
 	--main-bg-color: #454545;
 	--main-bg-color-2: #232323;
@@ -27,6 +32,7 @@ body{
 #map {
 	grid-row: 1/2;
 	grid-column: 2/3;
+	margin-top: 0.3rem;
 }
 
 body > div {
@@ -111,6 +117,8 @@ RIGHT SIDE, DOUBLE SLIDER
 	background-color: var(--main-bg-color-2);
 	border-radius: 5px;
 	margin: 0.3rem;
+	font-size: 2rem;
+	font-family: Roboto, Consolas,sans-serif;
 }
 
 /*
