@@ -15,6 +15,7 @@
 	--main-accent-color-2: #6bbcab;
 	--main-lighter: #757373;
 	--main-text-color: rgba(255, 255, 255, 0.9);
+	--main-text-height: 2rem;
 }
 
 body{
@@ -101,7 +102,7 @@ BOTTOM, SELECTORS
 	flex-wrap: wrap;
 	justify-content: space-evenly;
 	align-items: center;
-	font-size: 2rem;
+	font-size: var(--main-text-height);
 	background-color: var(--main-bg-color-2);
 	border-radius: 5px;
 	margin: 0.3rem 0;
@@ -117,7 +118,7 @@ RIGHT SIDE, DOUBLE SLIDER
 	background-color: var(--main-bg-color-2);
 	border-radius: 5px;
 	margin: 0.3rem;
-	font-size: 2rem;
+	font-size: var(--main-text-height);
 	font-family: Roboto, Consolas,sans-serif;
 }
 
@@ -201,7 +202,7 @@ CUSTOM RESET BUTTON
 	color: var(--main-lighter);
 	padding: 1rem 2rem;
 	margin: 1rem;
-	font-size: 2rem;
+	font-size: var(--main-text-height);
 	border: 2px solid var(--main-lighter);
 	background-color: transparent;
 	border-radius: 5px;
@@ -219,4 +220,23 @@ CUSTOM RESET BUTTON
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+
+@media only screen and (max-width: 500px) {
+	:root{
+		--main-text-height: 0.5rem;
+	}
+}
+
+@media only screen and (max-width: 1300px) {
+	:root{
+		--main-text-height: 0.8rem;
+	}
+}
+
+@media only screen and (max-width: 1650px) {
+	:root{
+		--main-text-height: 1.5rem;	}
+
 }

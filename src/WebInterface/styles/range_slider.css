@@ -9,7 +9,7 @@
 	justify-self: center;
 	border: 2px solid var(--main-lighter);
 	border-radius: 5px;
-	padding: 0.5rem 1rem;
+	padding: 0.3rem .7rem;
 }
 
 .middle {
@@ -27,7 +27,7 @@
 	justify-self: center;
 	border: 2px solid var(--main-lighter);
 	border-radius: 5px;
-	padding: 0.5rem 1rem;
+	padding: 0.3rem 0.7rem;
 }
 
 
