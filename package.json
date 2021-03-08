@@ -1,0 +1,7 @@
+{
+  "name": "evenements_tweeters",
+  "version": "1.0.0",
+  "devDependencies": {
+    "mongodb": "^3.6.4"
+  }
+}

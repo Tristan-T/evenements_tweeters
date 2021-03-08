@@ -14,30 +14,38 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 //MARKERS AND DESC
 let markers = [];
-let markersLocation = [[43.61, 3.87],[44.61, 3.87],[43.71, 3.97],[50.08804, 14.42076], [46.516, 6.63282]];
-let markersDesc = ["Here in <b>MONTPELLIER</b>", "This is a bit north", "I don't know <br> where this"];
+let markersLocation = [];
+let markersDesc = [];
+let heatLayer;
 
-for(let i=0;i<markersLocation.length;i++){
-    let temp=L.marker(markersLocation[i]);
-    temp.addTo(map);
-    temp.bindPopup(markersDesc[i]);
-    markers.push(temp);
+function drawAll() {
+    //Remove everything
+    markers.forEach(el => {
+        el.remove();
+    });
+    markers=[];
+    if (heatLayer) heatLayer.remove();
+
+    //And redraw
+    //Markers (for debugging)
+    for (let i = 0; i < markersLocation.length; i++) {
+        let temp = L.marker(markersLocation[i]);
+        temp.addTo(map);
+        temp.bindPopup(markersDesc[i]);
+        markers.push(temp);
+    }
+
+    //The heatmap
+    markersLocation.forEach((el) => el.push(0.5));
+    heatLayer = L.heatLayer(markersLocation, {
+        radius: 40,
+        blur: 35,
+        maxZoom: 1,
+    }).addTo(map);
+    markersLocation.forEach((el) => el.pop());
 }
 
-//Regroup points based on distance
-
-
-//HEATMAP
-let temp=markersLocation.slice(0);
-temp.forEach((el)=>el.push(0.5));
-L.heatLayer(temp,{
-    radius: 40,
-    blur: 35,
-    maxZoom: 1,
-}).addTo(map);
-markersLocation.forEach((el)=>el.pop());
-
-
+drawAll();
 
 //CHECK CLICK AREA FOR MARKERS
 // map.on('click', function(e) {
@@ -47,7 +55,7 @@ markersLocation.forEach((el)=>el.pop());
 //         .setContent('<p>Hello world!<br />This is a nice popup.</p>')
 //         .openOn(map);
 // });
-
+/*
 let circles=[];
 map.on('zoom', function(e) {
     console.log("-----");
@@ -101,7 +109,7 @@ map.on('zoom', function(e) {
     markersLocation.forEach((el)=>el.pop());
     console.log("-----");
 });
-
+*/
 //DISTANCE ION METERS BETWEEN TWO POINTS
 function dist(lat1, lon1, lat2, lon2){
     var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
@@ -116,4 +124,28 @@ function getDistanceAtCurrentScale(pixelsDistance) {
         point2 = map.containerPointToLatLng([pixelsDistance, containerMidHeight]);
 
     return point1.distanceTo(point2);
+}
+
+function loadDoc() {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            //add the tweet to the markerLocations array and redraw them
+            console.log(this.responseText);
+            JSON.parse(this.responseText).forEach(el=>{
+                let temp = el.location[0];
+                el.location[0]=el.location[1];
+                el.location[1]=temp;
+                markersLocation.push(el.location)
+                markersDesc.push(el.text)
+            });
+            drawAll();
+        }
+    };
+    let url = window.location.href.split('/');
+    url.pop();
+    url.push("allTweets")
+    url.join('/');
+    xhttp.open("GET", 'allTweets', true);
+    xhttp.send();
 }
