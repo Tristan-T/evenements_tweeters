@@ -1,8 +1,24 @@
+#slider_wrapper{
+	display : grid;
+	grid-template-rows: 5vh 90vh 5vh;
+}
+#max{
+	grid-row: 1/2;
+}
+
 .middle {
 	position: relative;
-	width: 50%;
-	max-width: 500px;
+	width: 90vh;
+	
+	grid-row: 2/3;
+	transform-origin: top left;
+	transform: rotate(-0.25turn) translate(-100%);
 }
+
+#min{
+	grid-row: 3/4;
+}
+
 
 .slider {
 	position: relative;
@@ -21,7 +37,7 @@
 	background: linear-gradient(to right, blue, DeepSkyBlue, yellow, orange, red);
 }
 .slider > .range {
-	position: absolute;
+	position: relative;
 	z-index: 2;
 	left: 25%;
 	right: 25%;
