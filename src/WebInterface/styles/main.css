@@ -77,7 +77,7 @@ LEFT SIDE, TWEETS
 }
 
 #tweets_title{
-	font-size: 3rem;
+	font-size: calc(var(--main-text-height) * 1.5 );
 	padding: 1rem;
 }
 
@@ -161,10 +161,10 @@ CUSTOM CHECKBOXES
 		border-radius: 52px 52px 52px 52px;
 		box-sizing: content-box;
 		color: #999999;
-		height: 1.2rem;
+		height: calc(var(--main-text-height) / 2 );
 		padding: 2px 2px 2px 2px;
 		transition: all 300ms ease;
-		width: 3.2rem;
+		width: calc(var(--main-text-height) * 1.5 );
 		position: relative;
 		top: 0.3rem;
 	}
@@ -177,14 +177,14 @@ CUSTOM CHECKBOXES
 		border-radius: 10px 10px 10px 10px;
 		content: "";
 		display: block;
-		height: 1.2rem;
+		height: calc(var(--main-text-height) / 2 );
 		transform: translateX(0px);
 		transition: transform 300ms ease;
-		width: 1.2rem;
+		width: calc(var(--main-text-height) / 2 );
 	}
 
 	.custom_checkbox:checked::after {
-		transform: translateX(2rem);
+		transform: translateX(var(--main-text-height));
 		background-color: var(--main-accent-color);
 	}
 }
@@ -235,8 +235,8 @@ CUSTOM RESET BUTTON
 	}
 }
 
-@media only screen and (max-width: 1650px) {
+@media only screen and (max-width: 1750px) {
 	:root{
-		--main-text-height: 1.5rem;	}
+		--main-text-height: 1rem;	}
 
 }
