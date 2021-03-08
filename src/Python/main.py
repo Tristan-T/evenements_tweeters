@@ -43,7 +43,6 @@ def loadConfig():
     print("CONFIG :: Fichier de configuration chargé")
 
 
-
 #-----------------------------------------------------#
 #                   Geocoder functions                #
 #-----------------------------------------------------#
@@ -52,7 +51,7 @@ def loadConfig():
 def getLocation(textLoc):
     #parameters maxRows=5 will return a list of the five first cities
     location = geonames(textLoc, key=config['geoname']['login_key'])
-    if location != None:
+    if len(location) == 1:
         # print(location.address)
         # print(location.point.format_unicode())
         return [float(location.lng), float(location.lat)]
@@ -145,11 +144,13 @@ def loadSpacy():
 
 #Find all locations objects in a text and return a list of tokens
 def getLocationsToken(tweetText):
+    print(tweetText)
     doc = nlp(tweetText)
     locations = []
     for ent in doc.ents:
-        if ent.label_ == 'GPE':
+        if ent.label_ == 'GPE' and ent.text not in locations:
             locations.append(ent.text)
+    print(locations)
     return locations
 
 #-----------------------------------------------------#
@@ -188,10 +189,9 @@ class MyStreamListener(tweepy.StreamListener):
             else:
                 return None
 
-        words = tweetText.split()
         disasterType = ""
         for keyWord in config["evenements_tweeter"]["keywords"]:
-            if keyWord in words:
+            if keyWord in tweetText:
                 disasterType = keyWord
         url = "https://twitter.com/i/web/status/" + str(status.id)
         locationsInTweet = getLocationsToken(tweetText)
