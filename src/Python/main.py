@@ -52,7 +52,7 @@ def loadConfig():
 def getLocation(textLoc):
     #parameters maxRows=5 will return a list of the five first cities
     location = geonames(textLoc, key=config['geoname']['login_key'])
-    if location != None:
+    if len(location) == 1:
         # print(location.address)
         # print(location.point.format_unicode())
         return [float(location.lng), float(location.lat)]
