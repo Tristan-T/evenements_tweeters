@@ -4,9 +4,24 @@
 let http = require('http');
 let path = require('path');
 let fs = require('fs');
-const url = require('url');
 const MongoClient = require('mongodb').MongoClient;
-let loca;
+
+/**
+ * DATABASE
+ */
+//Path to the config file
+const pathToConfig = "./src/Python/config.json";
+let client;
+let realTimeDB,dbName;
+//Connect to the database using the config file
+fs.readFile(pathToConfig, function (err, file) {
+    if (err) throw err;
+    const parsed = JSON.parse(file.toString());
+    dbName = parsed.mongodb.db_name;
+    realTimeDB = parsed.mongodb.collection_real_time_name;
+    client = new MongoClient("mongodb+srv://"+encodeURIComponent(parsed.mongodb.username)+":"+encodeURIComponent(parsed.mongodb.password)+"@"+encodeURIComponent(parsed.mongodb.address));
+    client.connect();
+});
 
 /**
  * HTTP server
@@ -32,9 +47,8 @@ http.createServer(async function (req, res) {
         res.writeHead(200, {'Content-Type': 'application/json'});
         res.write(JSON.stringify(await getTweets(qurl)));
         return res.end();
-    }else {
-        var fileName = req.url === '/' ? './src/WebInterface/index.html' : './src/WebInterface' + req.url,
-            ext = path.extname(fileName) === "" ? "html" : path.extname(fileName);
+    } else if(req.url.includes("WebInterface") || req.url === '/') {
+        var fileName = req.url === '/' ? './src/WebInterface/index.html' : './src/WebInterface' + req.url, ext = path.extname(fileName) === "" ? "html" : path.extname(fileName);
         fs.readFile(fileName, function (err, data) {
             if (err) {
                 res.writeHead(404, {'Content-Type': 'text/html'});
@@ -44,28 +58,14 @@ http.createServer(async function (req, res) {
             res.write(data);
             return res.end();
         });
+    } else {
+        console.log("Invalid request to "+ req.url);
     }
 }).listen(8080);
 
-/**
- * DATABASE
- */
-// Replace the uri string with your MongoDB deployment's connection string.
-const uri = "mongodb+srv://terL3:" + encodeURIComponent("terL3TWEET3R/") + "@dbtweet.fakza.mongodb.net/DBTweet";
-const client = new MongoClient(uri);
-client.connect();
-async function run() {
-    try {
-        const database = client.db('DBTweet');
-        const query = {disasterType:'Storm'};
-        loca = await database.collection('real_time').find(query).project({location: 1, _id: 0}).toArray();
-    } catch {
-    }
-}
-
 async function getTweets(types) {
     try {
-        const database = client.db('DBTweet');
+        const database = client.db(dbName);
         let query;
         if(types.length===1){
             query = {disasterType:types[0]}
@@ -73,7 +73,6 @@ async function getTweets(types) {
             query = {$or:[]}
             types.forEach(el => {query.$or.push({disasterType:el})})
         }
-
-        return await database.collection('real_time').find(query).project({location: 1, text:1, _id: 0}).toArray();
+        return await database.collection(realTimeDB).find(query).project({location: 1, text:1, _id: 0}).toArray();
     }catch{}
 }
