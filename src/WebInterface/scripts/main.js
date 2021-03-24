@@ -44,6 +44,7 @@ function drawAll() {
         maxZoom: 2,
     }).addTo(map);
     markersLocation.forEach((el) => el.pop());
+    drawCircles();
 }
 
 drawAll();
@@ -58,7 +59,9 @@ drawAll();
 // });
 
 let circles=[];
-map.on('zoom', function(e) {
+map.on('zoom', drawCircles);
+
+function drawCircles() {
     circles.forEach((el)=>map.removeLayer(el));
     circles=[];
     const maxRegroupDist=getDistanceAtCurrentScale(100)*(map.getZoom()/19)*2;
@@ -106,7 +109,7 @@ map.on('zoom', function(e) {
         }
     });
     markersLocation.forEach((el)=>el.pop());
-});
+}
 
 map.on("popupopen", function(e){
     //Treat the open popup as a request, text is the data in json
@@ -141,14 +144,14 @@ function displayTweets(location){
         //Only display the tweets from the area passed
         for (let i = 0; i < markersLocation.length; i++) {
             if (dist(markersLocation[i][0], markersLocation[i][1], location.lat, location.long)<=location.radius) {
-                temp += "<blockquote class='twitter-tweet' data-theme='dark'><a href='" + markersTweets[i] + "'></a></blockquote>";
+                temp += "<blockquote class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + markersTweets[i] + "'></a></blockquote>";
             }
         }
         container.innerHTML += temp;
     } else {
         //Display all the tweets
         markersTweets.forEach((el) => {
-            temp += "<blockquote class='twitter-tweet' data-theme='dark'><a href='" + el + "'></a></blockquote>";
+            temp += "<blockquote class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + el + "'></a></blockquote>";
         });
         container.innerHTML += temp;
     }
