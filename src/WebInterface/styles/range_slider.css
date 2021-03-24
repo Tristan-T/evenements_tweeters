@@ -1,7 +1,7 @@
 #slider_wrapper{
 	display : grid;
 	grid-template-rows: 5vh auto 5vh;
-	grid-template-columns: calc(5vw - 0.6rem);
+	grid-template-columns: calc(5vw - 1.4rem);
 }
 #max{
 	grid-row: 1/2;
@@ -9,7 +9,7 @@
 	justify-self: center;
 	border: 2px solid var(--main-lighter);
 	border-radius: 5px;
-	padding: 0.3rem .7rem;
+	padding: 0.1rem 0.3rem;
 }
 
 .middle {
@@ -18,7 +18,7 @@
 	grid-row: 2/3;
 	transform-origin: top left;
 	transform: rotate(-0.25turn) translate(-100%);
-	margin-left: calc(2.5vw - 10px);
+	margin-left: calc(calc(calc(5vw - 1.4rem) / 2) - 5px);
 }
 
 #min{
@@ -27,7 +27,7 @@
 	justify-self: center;
 	border: 2px solid var(--main-lighter);
 	border-radius: 5px;
-	padding: 0.3rem 0.7rem;
+	padding: 0.1rem 0.3rem;
 }
 
 
