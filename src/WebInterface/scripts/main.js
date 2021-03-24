@@ -18,6 +18,7 @@ let markers = [];
 let markersLocation = [];
 let markersTweets = [];
 let heatLayer;
+let circles=[];
 
 function drawAll() {
     //Remove everything
@@ -58,7 +59,6 @@ drawAll();
 //         .openOn(map);
 // });
 
-let circles=[];
 map.on('zoom', drawCircles);
 
 function drawCircles() {
