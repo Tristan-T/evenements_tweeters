@@ -223,7 +223,7 @@ CUSTOM RESET BUTTON
 	align-items: center;
 }
 
-@media only screen and (max-width: 1750px) {
+@media only screen and (max-width: 1920px) {
 	body {
 		grid-template-columns: 30vw 65vw 5vw;
 		grid-template-rows: 75vh 25vh;
