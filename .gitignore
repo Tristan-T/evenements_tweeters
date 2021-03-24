@@ -6,3 +6,4 @@ src/Python/config.json
 
 # Python cache
 __pycache__/
+src/Python/configTris.json
