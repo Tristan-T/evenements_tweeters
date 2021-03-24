@@ -47,8 +47,8 @@ http.createServer(async function (req, res) {
         res.writeHead(200, {'Content-Type': 'application/json'});
         res.write(JSON.stringify(await getTweets(qurl)));
         return res.end();
-    } else if(req.url.includes("WebInterface") || req.url === '/') {
-        var fileName = req.url === '/' ? './src/WebInterface/index.html' : './src/WebInterface' + req.url, ext = path.extname(fileName) === "" ? "html" : path.extname(fileName);
+    } else if(req.url.includes("WebInterface") || req.url.includes("styles") || req.url.includes("scripts") || req.url.includes("assets") || req.url === '/') {
+        let fileName = req.url === '/' ? './src/WebInterface/index.html' : './src/WebInterface' + req.url, ext = path.extname(fileName) === "" ? "html" : path.extname(fileName);
         fs.readFile(fileName, function (err, data) {
             if (err) {
                 res.writeHead(404, {'Content-Type': 'text/html'});
@@ -73,6 +73,6 @@ async function getTweets(types) {
             query = {$or:[]}
             types.forEach(el => {query.$or.push({disasterType:el})})
         }
-        return await database.collection(realTimeDB).find(query).project({location: 1, text:1, _id: 0}).toArray();
+        return await database.collection(realTimeDB).find(query).project({location: 1, url:1, _id: 0}).toArray();
     }catch{}
 }

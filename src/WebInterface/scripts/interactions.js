@@ -18,19 +18,19 @@ document.getElementById('apply_button').addEventListener('click', function(e){
         }
     }
     query=query.join('+');
-    console.log(query)
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             //reset then add the tweet to the markerLocations and description array and redraw them
             markersLocation = [];
-            markersDesc = [];
+            markersTweets = [];
             JSON.parse(this.responseText).forEach(el=>{
                 let temp = el.location[0];
                 el.location[0]=el.location[1];
                 el.location[1]=temp;
                 markersLocation.push(el.location)
-                markersDesc.push(el.text)
+                markersTweets.push(el.url);
+                displayTweets();
             });
             drawAll();
         }
