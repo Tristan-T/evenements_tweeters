@@ -193,7 +193,7 @@ class MyStreamListener(tweepy.StreamListener):
         for keyWord in config["evenements_tweeter"]["keywords"]:
             if keyWord in tweetText:
                 disasterType = keyWord
-        url = "https://twitter.com/i/web/status/" + str(status.id)
+        url = "https://twitter.com/i/status/" + str(status.id)
         locationsInTweet = getLocationsToken(tweetText)
         if (len(locationsInTweet) == 1):
             try :
