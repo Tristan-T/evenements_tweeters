@@ -15,7 +15,7 @@
 	--main-accent-color-2: #6bbcab;
 	--main-lighter: #757373;
 	--main-text-color: rgba(255, 255, 255, 0.9);
-	--main-text-height: clamp(1rem, 1.5vw, 2rem);
+	--main-text-height: clamp(0.5rem, 1.22vw, 2rem);
 }
 
 body{
@@ -226,5 +226,6 @@ CUSTOM RESET BUTTON
 @media only screen and (max-width: 1750px) {
 	body {
 		grid-template-columns: 30vw 65vw 5vw;
+		grid-template-rows: 75vh 25vh;
 	}
 }

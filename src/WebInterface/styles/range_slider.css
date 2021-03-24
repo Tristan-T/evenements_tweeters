@@ -14,11 +14,13 @@
 
 .middle {
 	position: relative;
-	width: 90vh;
+	width: 85vh;
 	grid-row: 2/3;
 	transform-origin: top left;
-	transform: rotate(-0.25turn) translate(-100%);
+	transform: rotate(-0.25turn) translate(-50%, -0%);
 	margin-left: calc(calc(calc(5vw - 1.4rem) / 2) - 5px);
+	margin-top: auto;
+	margin-bottom: auto;
 }
 
 #min{
