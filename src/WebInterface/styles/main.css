@@ -24,7 +24,7 @@ body{
 	background-color: var(--main-bg-color);
 	display: grid;
 	grid-template-columns: 20vw 75vw 5vw;
-	grid-template-rows: 84vh 16vh;
+	grid-template-rows: 80vh 20vh;
 	font-family: 'Raleway', sans-serif;
 	font-weight: normal;
 	color: var(--main-text-color);
@@ -194,6 +194,23 @@ CUSTOM CHECKBOXES
 	padding: 0.2rem;
 }
 
+label {
+	user-select: none;
+}
+
+.custom_checkbox_2{
+	appearance: none;
+}
+
+.custom_checkbox_2 + label{
+	padding: 0.2rem;
+	border-radius: 2px;
+}
+
+.custom_checkbox_2:checked + label {
+	background-color: #6bbcab;
+}
+
 /*
 CUSTOM RESET BUTTON
 */
@@ -201,8 +218,8 @@ CUSTOM RESET BUTTON
 #reset_button,#apply_button{
 	outline: none;
 	color: var(--main-lighter);
-	padding: 1rem 2rem;
-	margin: 1rem;
+	padding: 0rem 1rem;
+	margin: 0.5rem;
 	font-size: var(--main-text-height);
 	border: 2px solid var(--main-lighter);
 	background-color: transparent;
@@ -221,6 +238,20 @@ CUSTOM RESET BUTTON
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+#date_selector{
+	margin: 0.2rem;
+	font-size: var(--main-text-height);
+	border: 2px solid var(--main-lighter);
+	border-radius: 5px;
+	background-color: transparent;
+	color: var(--main-text-color);
+	width: 100%;
+}
+
+#date_selector option{
+	color: var(--main-bg-color);
 }
 
 @media only screen and (max-width: 1920px) {

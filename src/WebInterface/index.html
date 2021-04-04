@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<title>First test Leaflet</title>
+		<title>Natural disaster world map</title>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8"/>
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
@@ -67,6 +67,18 @@
 				<div class=checkbox>
 					<input class="custom_checkbox" type="checkbox" checked id="checkbox10" name="checkbox10" value="Landslide">
 					<label for="checkbox10"> Glissement de terrain</label><br>
+				</div>
+
+				<div id="date_selector_wrapper">
+					<select id="date_selector">
+						<option value="5m">5 min</option>
+						<option value="10m">10 min</option>
+						<option value="15m">15 min</option>
+						<option value="30m">30 min</option>
+						<option value="60m">60 min</option>
+						<option value="12h">12h</option>
+						<option value="24h">24h</option>
+					</select>
 				</div>
 				<div id="buttons_wrapper">
 					<button id="apply_button">Apply</button>
