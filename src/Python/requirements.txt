@@ -1,0 +1,5 @@
+tweepy==3.10.0
+pymongo==3.11.2
+geocoder==1.38.1
+spacy==3.0.3
+dnspython==2.1.0

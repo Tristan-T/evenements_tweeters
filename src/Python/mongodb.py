@@ -1,6 +1,7 @@
 from pymongo import MongoClient, GEO2D
 import urllib
 import datetime
+import re
 
 #TODO : Securely store password
 password = str(input("Please enter DB password : "))
@@ -9,7 +10,6 @@ passwordEncoded = urllib.parse.quote_plus(password)
 
 client = MongoClient("mongodb+srv://terL3:" + passwordEncoded + "@dbtweet.fakza.mongodb.net/DBTweet?retryWrites=true&w=majority")
 db=client.DBTweet
-tweetValide=db.valide
 tweetRealTime=db.real_time
 
 serverStatusResult=db.command("serverStatus")
@@ -17,45 +17,19 @@ serverStatusResult=db.command("serverStatus")
 
 d = datetime.datetime.strptime("2021-02-07T16:44:53", "%Y-%m-%dT%H:%M:%S")
 
-listeTV = tweetValide.find()
-for tweet in listeTV:
-        print(tweet)
+regx = re.compile("web")
 
-    
-"""
-Cette fonction ajoute un tweet à la base de données "real-time" du programme.
-Elle prends en paramètre :
-        - L'ID du tweet, qui sera utilisé comme _id dans MongoDB
-        - Le string JSON du tweet
-        - La date de publication du tweet (convertissable en objet Date)
-        - La location GPS du tweet (longitude puis latitude)
-"""
-def addTweetRealTimeDB(idTweet, text, disasterType, url, jsonData, date, location):
-        d = datetime.datetime.strptime("2021-02-07T16:44:53", "%Y-%m-%dT%H:%M:%S")
-        
-        tweetRealTime.insert_one({
-            "_id": str(idTweet),
-            "text": text,
-            "disasterType": disasterType,
-            "url": url,
-            "json": jsonData,
-            "date": date,
-            "location": {"lng":-73.41 , "lat":40.764},
-        })
+print("valide")
+for doc in tweetValide.find():
+    #doc['url'] = doc['url'].replace('/web', '')
+    print(doc['url'])
+    #db.valide.replace_one({'_id': doc['_id']}, doc)
 
-def addTweetValideDB(idTweet, text, disasterType, url, jsonData, date, locations):
-        d = datetime.datetime.strptime("2021-02-07T16:44:53", "%Y-%m-%dT%H:%M:%S")
 
-        tweetValide.insert_one({
-                "_id": str(idTweet),
-                "text": text,
-                "disasterType": disasterType,
-                "url": url,
-                "json": jsonData,
-                "date": date,
-                "locations": locations,
-                "validated": False
-}) 
-        
+print("real time")
+for doc in tweetRealTime.find():
+    #doc['url'] = doc['url'].replace('/web', '')
+    print(doc['url'])
+    #db.real_time.replace_one({'_id': doc['_id']}, doc)
 
 print(serverStatusResult)
