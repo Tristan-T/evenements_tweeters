@@ -35,11 +35,17 @@ document.getElementById('apply_button').addEventListener('click', function(e){
             drawAll();
         }
     };
-    let url = window.location.href.split('/');
+    let url = window.location.href;
+    if(window.location.port===''){
+        url = window.location.href.replace(window.location.origin, window.location.origin+':8080');
+    } else if(window.location.port!==''){
+        url = window.location.href.replace(window.location.port, '8080');
+    }
+    url = url.split('/');
     url.pop();
-    url.push("allTweets")
-    url.join('/');
-    xhttp.open("GET", 'getTweets?'+query, true);
+    url = url.join('/');
+    console.log(url)
+    xhttp.open("GET", url+'getTweets?'+query, true);
     xhttp.send();
 });
 
