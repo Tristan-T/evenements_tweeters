@@ -17,6 +17,7 @@ document.getElementById('apply_button').addEventListener('click', function(e){
             query.push(encodeURI(check.value));
         }
     }
+    query.push("time="+document.getElementById('date_selector').value);
     query=query.join('+');
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -44,10 +45,12 @@ document.getElementById('apply_button').addEventListener('click', function(e){
     url = url.split('/');
     url.pop();
     url = url.join('/');
-    console.log(url)
-    xhttp.open("GET", url+'getTweets?'+query, true);
+    xhttp.open("GET", url+'/getTweets?'+query, true);
     xhttp.send();
 });
+
+// load tweets on load of page
+window.addEventListener('load', function (e) {document.getElementById('apply_button').click()});
 
 /**
  * Slider

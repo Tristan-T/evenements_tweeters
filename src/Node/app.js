@@ -12,13 +12,14 @@ const MongoClient = require('mongodb').MongoClient;
 //Path to the config file
 const pathToConfig = "./src/Python/config.json";
 let client;
-let realTimeDB,dbName;
+let realTimeDB, validateDB, dbName;
 //Connect to the database using the config file
 fs.readFile(pathToConfig, function (err, file) {
     if (err) throw err;
     const parsed = JSON.parse(file.toString());
     dbName = parsed.mongodb.db_name;
     realTimeDB = parsed.mongodb.collection_real_time_name;
+    validateDB = parsed.mongodb.collection_valid_name;
     client = new MongoClient("mongodb+srv://"+encodeURIComponent(parsed.mongodb.username)+":"+encodeURIComponent(parsed.mongodb.password)+"@"+encodeURIComponent(parsed.mongodb.address));
     client.connect();
 });
@@ -39,16 +40,31 @@ const extensions = {
 
 //This part sends to the client the file it requests. not very secure but hey
 http.createServer(async function (req, res) {
-    if(req.url.includes("getTweets")){
+    const request = req.url.split('/')
+    if(request.some(e => (/getTweets.*/).test(e))){
         //get the query string
         let qurl = new URL("foo://bar.com"+req.url).search.substring(1).split('+');
         //make sure we don't have url stuff
         qurl.forEach(el => {el=decodeURI(el)});
+        //get the time value and remove it from the list
+        let time, id;
+        qurl.some(e => {if((/time=.*/).test(e)){time=e.replace("time=", ''); id=qurl.indexOf(e);return true;}else{return false}});
+        qurl.splice(id, 1);
         res.writeHead(200, {'Content-Type': 'application/json'});
-        res.write(JSON.stringify(await getTweets(qurl)));
+        res.write(JSON.stringify(await getTweets(qurl, time)));
         return res.end();
-    } else if(req.url.includes("WebInterface") || req.url.includes("styles") || req.url.includes("scripts") || req.url.includes("assets") || req.url === '/') {
-        let fileName = req.url === '/' ? './src/WebInterface/index.html' : './src/WebInterface' + req.url, ext = path.extname(fileName) === "" ? "html" : path.extname(fileName);
+    } else if(request.includes("getTweetsToValidate")){
+        console.log('here');
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.write(JSON.stringify(await getTweetsToValidate()));
+        return res.end();
+    } else if(request.includes("validateTweet")){
+        let qurl = new URL("foo://bar.com"+req.url).search.substring(1).split('+');
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.write(JSON.stringify(await validateTweet()));
+        return res.end();
+    } else if(request.includes("WebInterface") || request.includes("styles") || request.includes("scripts") || request.includes("assets") || request === []) {
+        let fileName = request.join('/') === '/' ? './src/WebInterface/index.html' : "."+request.join('/'), ext = path.extname(fileName) === "" ? "html" : path.extname(fileName);
         fs.readFile(fileName, function (err, data) {
             if (err) {
                 res.writeHead(404, {'Content-Type': 'text/html'});
@@ -59,20 +75,49 @@ http.createServer(async function (req, res) {
             return res.end();
         });
     } else {
-        console.log("Invalid request to "+ req.url);
+        console.log("Invalid request to "+ request.join('/'));
     }
 }).listen(8080);
 
-async function getTweets(types) {
+async function getTweets(types, time) {
+    switch (time) {
+        case '5m': time=5; break;
+        case '10m': time=10; break;
+        case '15m': time=15; break;
+        case '30m': time=30; break;
+        case '60m': time=60; break;
+        case '12h': time=12*60; break;
+        case '24h': time=24*60; break;
+    }
     try {
         const database = client.db(dbName);
         let query;
         if(types.length===1){
-            query = {disasterType:types[0]}
+            query = {disasterType:types[0], date:{$gt:new Date(Date.now()-(time*60*1000))}}
         } else {
-            query = {$or:[]}
+            query = {$or:[], date:{$gt:new Date(Date.now()-(time*60*1000))}}
             types.forEach(el => {query.$or.push({disasterType:el})})
         }
         return await database.collection(realTimeDB).find(query).project({location: 1, url:1, _id: 0}).toArray();
-    }catch{}
+    }catch(e){
+        console.log(e);
+    }
+}
+
+async function getTweetsToValidate() {
+    try {
+        const database = client.db(dbName);
+        return await database.collection(validateDB).find({validated:false}).project({candidateLocations : 1, url:1, _id: 1}).toArray();
+    }catch(e){
+        console.log(e);
+    }
+}
+
+async function validateTweet(id, locations, offTopic, rule) {
+    try {
+        const database = client.db(dbName);
+        return await database.collection(validateDB).updateOne({_id:id}, {$set: {validatedLocations:locations, validated:true, offTopic: offTopic, rule: rule}}).modifiedCount==1;
+    }catch(e){
+        console.log(e);
+    }
 }
