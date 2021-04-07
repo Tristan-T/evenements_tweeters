@@ -129,7 +129,10 @@ def addTweetValideDB(idTweet, text, disasterType, url, jsonData, date, locations
         "json": jsonData,
         "date": date,
         "locations": locations,
-        "validated": False
+        "validated": False,
+        "validatedLocations": None,
+        "offTopic": None,
+        "rule": None
     })
 
 #-----------------------------------------------------#
@@ -201,10 +204,8 @@ class MyStreamListener(tweepy.StreamListener):
                 addTweetRealTimeDB(status.id, tweetText, disasterType, url, status._json, status.created_at, location)
             except NameError:
                 addTweetValideDB(status.id, tweetText, disasterType, url, status._json, status.created_at, locationsInTweet)
-        elif (len(locationsInTweet) > 1):
-            addTweetValideDB(status.id, tweetText, disasterType, url, status._json, status.created_at, locationsInTweet)
         else:
-            addTweetValideDB(status.id, tweetText, disasterType, url, status._json, status.created_at, None)
+            addTweetValideDB(status.id, tweetText, disasterType, url, status._json, status.created_at, locationsInTweet)
 
     def on_error(self, status_code):
         if status_code == 420:
