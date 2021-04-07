@@ -16,6 +16,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 //MARKERS and tweets
 let markers = [];
 let markersLocation = [];
+let markersLocations = [];
 let markersTweets = [];
 let markersId = [];
 let heatLayer;
@@ -160,6 +161,6 @@ function displayTweets(location){
 }
 
 function displayTweet(id){
-    document.getElementById("tweets_body").innerHTML += "<blockquote class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + id + "'></a></blockquote>";
+    document.getElementById("tweets_body").innerHTML = "<blockquote class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + id + "'></a></blockquote>";
     twttr.widgets.load(document.getElementById("tweets_body"));
 }
