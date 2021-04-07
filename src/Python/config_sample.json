@@ -8,12 +8,13 @@
   },
   "mongodb": {
     "address": "",
-	"username": "",
+    "username": "",
     "password": "",
     "db_name": "",
     "collection_valid_name": "",
     "collection_real_time_name": "",
-	"optional_URI_parameters": ""
+    "collection_rules_name": "",
+    "optional_URI_parameters": ""
   },
   "geoname": {
     "login_key": ""
