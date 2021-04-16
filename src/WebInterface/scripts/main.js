@@ -9,7 +9,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     id: 'mapbox/streets-v11',
     tileSize: 512,
     zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoicHl2ZXMiLCJhIjoiY2trZTRiaG9iMHhtdjJvcGFpNGQxd3g3NCJ9.fUjSwyRIh6KGjPh3WFy3_Q',
+    accessToken: 'pk.eyJ1IjoicHl2ZXMiLCJhIjoiY2trZTRiaG9iMHhtdjJvcGFpNGQxd3g3NCJ9.fUjSwyRIh6KGjPh3WFy3_Q'
 }).addTo(map);
 
 
@@ -28,18 +28,8 @@ function drawAll() {
         el.remove();
     });
     markers=[];
-    if (heatLayer) heatLayer.remove();
-
-    //And redraw
-    //Markers (for debugging)
-    // for (let i = 0; i < markersLocation.length; i++) {
-    //     let temp = L.marker(markersLocation[i]);
-    //     temp.addTo(map);
-    //     // temp.bindPopup(markersDesc[i]);
-    //     markers.push(temp);
-    // }
-
     //The heatmap
+    if (heatLayer) heatLayer.remove();
     markersLocation.forEach((el) => el.push(0.5));
     heatLayer = L.heatLayer(markersLocation, {
         radius: 30,
@@ -118,6 +108,8 @@ map.on("popupopen", function(e){
     const location = JSON.parse(e.popup._content);
     //Close the popup so it is seamless for the user
     map.closePopup();
+    currentMaxTweetFactor=1;
+    currentMinTweetId=0;
 
     displayTweets(location)
 });
@@ -138,10 +130,19 @@ function getDistanceAtCurrentScale(pixelsDistance) {
     return point1.distanceTo(point2);
 }
 
-function displayTweets(location){
+let currentMaxTweetFactor=1;
+let currentMinTweetId=0;
+function displayTweets(location, number, removePrevious = true){
     const container = document.getElementById("tweets_body");
-    let temp='';
-    container.innerHTML = '';
+    //Use current time as id to refresh only the new tweets
+    const id = Date.now();
+    let temp='<div id='+id+'>';
+    if (removePrevious) {
+        container.innerHTML = '';
+    }
+    if(document.getElementById('moreTweets')) {
+        container.removeChild(document.getElementById('moreTweets'));
+    }
     if (location) {
         //Only display the tweets from the area passed
         for (let i = 0; i < markersLocation.length; i++) {
@@ -149,18 +150,47 @@ function displayTweets(location){
                 temp += "<blockquote class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + markersTweets[i] + "'></a></blockquote>";
             }
         }
-        container.innerHTML += temp;
     } else {
         //Display all the tweets
-        markersTweets.forEach((el) => {
+        markersTweets.slice(currentMinTweetId, Math.min(currentMaxTweetFactor*(number || 15), markersTweets.length-1)).forEach((el) => {
             temp += "<blockquote class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + el + "'></a></blockquote>";
         });
-        container.innerHTML += temp;
     }
-    twttr.widgets.load(container);
+    temp+='</div>';
+    if(currentMaxTweetFactor*(number || 15)<=markersTweets.length-1 && !location) {
+        temp += '<p onclick="moreTweets()" id="moreTweets">MORE TWEETS</p>'
+        currentMinTweetId = Math.min(currentMaxTweetFactor*(number || 15), markersTweets.length-1);
+    }
+    container.innerHTML += temp;
+    twttr.widgets.load(document.getElementById(id+''));
 }
 
-function displayTweet(id){
-    document.getElementById("tweets_body").innerHTML = "<blockquote class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + id + "'></a></blockquote>";
-    twttr.widgets.load(document.getElementById("tweets_body"));
+function moreTweets(){
+    currentMaxTweetFactor++;
+    displayTweets(undefined, undefined, false);
+}
+
+function getCircleMinMaxContent() {
+    let min = Number.MAX_SAFE_INTEGER;
+    let max = 0;
+    for (let i = 0; i < circles.length; i++) {
+        let current=getCircleContent(i).length;
+        if (current>max) {
+            max=current;
+        } else if (current<min) {
+            min=current;
+        }
+    }
+    return {'min':min, 'max':max}
+}
+
+function getCircleContent(i) {
+    const coords = JSON.parse(circles[i]._popup._content);
+    let tmp=[];
+    for (let j = 0; j < markersLocation.length; j++) {
+        if (dist(markersLocation[j][0], markersLocation[j][1], coords.lat, coords.long)<=coords.radius) {
+            tmp.push([...markersLocation[j]]);
+        }
+    }
+    return tmp;
 }

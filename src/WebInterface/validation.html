@@ -1,46 +1,43 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <title>Validator</title>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="http://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <link rel="stylesheet" href="styles/main.css"/>
-    <link rel="stylesheet" href="styles/range_slider.css"/>
-</head>
+    <head>
+        <title>Validator</title>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="styles/validation.css"/>
+    </head>
 
-<body>
-<div id="tweets_wrapper">
-    <div id="tweets_header">
-        <span id="tweets_title">Latest Tweets</span>
-        <div id="tweets_header_accent"></div>
-    </div>
-    <div id="tweets_body">
-    </div>
-</div>
-<div id="map"></div>
-<div id="selectors_wrapper">
-<!--    <div class=checkbox>-->
-<!--        <input class="custom_checkbox_2" type="checkbox" name="checkbox1" value="Flooding">-->
-<!--        <label> Inondation</label><br>-->
-<!--    </div>-->
-<!--        <select id="date_selector">-->
-<!--            <option value="5m">5 min</option>-->
-<!--            <option value="10m">10 min</option>-->
-<!--            <option value="15m">15 min</option>-->
-<!--            <option value="30m">30 min</option>-->
-<!--            <option value="60m">60 min</option>-->
-<!--            <option value="12h">12h</option>-->
-<!--            <option value="24h">24h</option>-->
-<!--        </select>-->
-</div>
-<div id="slider_wrapper">
-</div>
-</body>
-<!-- Make sure to import the script after the page has been loaded-->
-<script src="scripts/main.js"></script>
-<script src="scripts/validation.js"></script>
+    <body>
+        <div id="tweets_wrapper">
+            <div id="tweets_header">
+                <span id="tweets_title">Validate tweet</span>
+                <div id="tweets_header_accent"></div>
+            </div>
+            <div id="tweets_body"></div>
+            <div id="tweets_manual">
+                Veritatis ex nam ratione qui vitae doloremque voluptas. Vero molestiae dolor nemo doloremque rerum deleniti voluptatem expedita. Voluptatem deleniti iste iusto quos. Sed maxime reiciendis et consequuntur ad. Ipsum accusamus quo voluptas nihil.
+                <br>
+                Quibusdam illum sequi velit consequuntur reprehenderit blanditiis. Veniam vitae quo odit provident ipsum sed voluptas. Doloremque aut rem tenetur cupiditate praesentium.
+                <br>
+                <br>
+                Incidunt voluptatem aut vel impedit aut unde fuga. Officiis eos expedita voluptatem sapiente consequatur itaque magnam quia. Facere animi nobis natus amet molestiae autem occaecati cumque. Fuga et aut id unde quibusdam quos. Ea quasi voluptatem est accusantium molestiae omnis. Est quia ut iusto dolorem sint perspiciatis dolorum.
+                <br>
+                Ducimus molestiae ut soluta incidunt qui commodi et deleniti. Tempora ut dolor eius iusto delectus omnis consequatur nostrum. Ut eos dolor occaecati asperiores et non. A quis impedit repellendus eligendi aut.
+                <br>
+                <br>
+                Explicabo expedita id modi est. Doloribus repellendus quia sit est et. Animi inventore dolorem enim dolores unde. Qui perspiciatis magni quas ratione enim omnis. Quis voluptatum voluptatem esse aut voluptas voluptatem voluptatem.
+                <br>
+                <br>
+                <br>
+                <a id="toggleRules" onclick="toggleRules()">Switch advanced mode</a>
+            </div>
+        </div>
+        <div id="map"></div>
+        <div id="selectors_wrapper">
+        </div>
+    </body>
+    <!-- Make sure to import the script after the page has been loaded-->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/validation.js"></script>
 </html>

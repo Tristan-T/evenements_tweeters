@@ -90,6 +90,12 @@ LEFT SIDE, TWEETS
 	overflow-x: hidden;
 }
 
+#tweets_body p {
+	text-align: center;
+	padding: 1rem;
+	cursor: pointer;
+}
+
 /*
 BOTTOM, SELECTORS
 */
@@ -196,19 +202,6 @@ CUSTOM CHECKBOXES
 
 label {
 	user-select: none;
-}
-
-.custom_checkbox_2{
-	appearance: none;
-}
-
-.custom_checkbox_2 + label{
-	padding: 0.2rem;
-	border-radius: 2px;
-}
-
-.custom_checkbox_2:checked + label {
-	background-color: #6bbcab;
 }
 
 /*

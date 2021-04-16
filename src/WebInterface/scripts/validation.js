@@ -13,7 +13,7 @@ window.addEventListener('load', function (e) {
             JSON.parse(this.responseText).forEach(el=>{
                 //store tweets and location
                 markersLocations.push(el.locations);
-                markersTweets.push(el.url);
+                markersTweets.push(el.text);
                 markersId.push(el._id);
             });
             nextValidation();
@@ -27,10 +27,8 @@ window.addEventListener('load', function (e) {
         url = window.location.href.replace(window.location.port, '8080');
     }
     url = url.split('/');
-    url.pop();
     url.push('getTweetsToValidate')
     url = url.join('/');
-    console.log(url)
     xhttp.open("GET", url, true);
     xhttp.send();
 });
@@ -43,60 +41,65 @@ function nextValidation() {
     container.innerHTML='';
     markersLocations[nextTweet].forEach((el) => {
 
-        container.innerHTML+='<div class=checkbox>\n' +
-            '        <input class="custom_checkbox_2" type="checkbox" name="checkbox1" id="' + encodeURIComponent(el) + '" value="' + encodeURIComponent(el) + '">\n' +
+        container.innerHTML+='<div class="checkbox">\n' +
+            '        <input class="custom_checkbox_2 location_checkbox" type="checkbox" name="checkbox1" id="' + encodeURIComponent(el) + '" value="' + encodeURIComponent(el) + '">\n' +
             '        <label for="' + encodeURIComponent(el) + '"> ' + el + '</label><br>\n' +
             '    </div>';
     })
-    container.innerHTML+='<div class=checkbox>\n' +
-        '        <input class="custom_checkbox_2" type="checkbox" name="checkbox1" id="none" value="none">\n' +
+    container.innerHTML+='<div class="checkbox">\n' +
+        '        <input class="custom_checkbox_2 location_checkbox" type="checkbox" name="checkbox1" id="none" value="none">\n' +
         '        <label for="none">Aucun</label><br>\n' +
         '    </div>';
-    container.innerHTML+='<div class=checkbox>\n' +
-        '        <input class="custom_checkbox_2" type="checkbox" name="checkbox1" id="notProposed" value="notProposed">\n' +
+    container.innerHTML+='<div class="checkbox">\n' +
+        '        <input class="custom_checkbox_2 location_checkbox" type="checkbox" name="checkbox1" id="notProposed" value="notProposed">\n' +
         '        <label for="notProposed">Non Proposé</label><br>\n' +
         '    </div>';
-    container.innerHTML+='<div class=checkbox>\n' +
+    container.innerHTML+='<div class="checkbox">\n' +
         '        <input class="custom_checkbox_2" type="checkbox" name="checkbox1" id="offTopic" value="offTopic">\n' +
         '        <label for="offTopic">Hors sujet</label><br>\n' +
         '    </div>';
-    container.innerHTML+='<div class=checkbox><textarea id="addRule"></textarea><button onclick="addRule()">Add rule</button><select id="rule"></select></div>';
-    container.innerHTML+='<button onclick="sendAndNext()">Suivant</button>';
+    container.innerHTML+='<div class="checkbox" id="ruleDiv"><textarea id="addRule"></textarea><button onclick="addRule()">Add rule</button><select id="rule"></select></div>';
+    container.innerHTML+='<button id="button_next" onclick="sendAndNext()">Suivant</button>';
 }
 
 function sendAndNext() {
-    let checkboxes = document.getElementsByClassName('custom_checkbox_2');
-    let query = [];
-    let offtopic=false;
-    for(const check of checkboxes){
-        if (check.checked){
-            if (check.value==="offTopic") {
-                offtopic=true;
-            } else {
-                query.push(encodeURI(check.value));
+    //If at least one of the locations is checked (including "none" or "not proposed")
+    if(Array.from(document.getElementsByClassName(' location_checkbox')).some(e => e.checked)){
+        let checkboxes = document.getElementsByClassName('custom_checkbox_2');
+        let query = [];
+        let offtopic = false;
+        for (const check of checkboxes) {
+            if (check.checked) {
+                if (check.value === "offTopic") {
+                    offtopic = true;
+                } else {
+                    query.push(encodeURI(check.value));
+                }
             }
         }
+        query = query.join(',');
+        query = (query.length > 0 ? 'loc=' + query + '&' : query);
+        query += 'id=' + markersId[nextTweet];
+        query += '&offTopic=' + offtopic;
+        query += '&rule=' + document.getElementById('rule').value;
+        let xhttp = new XMLHttpRequest();
+        let url = window.location.href;
+        if (window.location.port === '') {
+            url = window.location.href.replace(window.location.origin, window.location.origin + ':8080');
+        } else if (window.location.port !== '') {
+            url = window.location.href.replace(window.location.port, '8080');
+        }
+        url = url.split('/');
+        url.pop();
+        url = url.join('/');
+        xhttp.open("GET", url + '/validateTweet?' + query, true);
+        xhttp.send();
+        nextTweet++;
+        nextValidation();
+        updateRules();
+    } else {
+        Array.from(document.getElementsByClassName(' location_checkbox')).forEach(e => negativeFeedback(e.parentElement));
     }
-    query=query.join(',');
-    query=(query.length>0?'loc='+query+'&':query);
-    query+='id='+markersId[nextTweet];
-    query+='&offTopic='+offtopic;
-    query+='&rule='+document.getElementById('rule').value;
-    let xhttp = new XMLHttpRequest();
-    let url = window.location.href;
-    if(window.location.port===''){
-        url = window.location.href.replace(window.location.origin, window.location.origin+':8080');
-    } else if(window.location.port!==''){
-        url = window.location.href.replace(window.location.port, '8080');
-    }
-    url = url.split('/');
-    url.pop();
-    url = url.join('/');
-    xhttp.open("GET", url+'/validateTweet?'+query, true);
-    xhttp.send();
-    nextTweet++;
-    nextValidation();
-    updateRules();
 }
 
 function updateRules() {
@@ -146,4 +149,25 @@ function addRule() {
     url = url.join('/');
     xhttp.open("GET", url, true);
     xhttp.send();
+}
+
+function toggleRules() {
+    if (document.getElementById('ruleDiv').style.display === "none") {
+        document.getElementById('ruleDiv').style.display = '';
+    } else {
+        document.getElementById('ruleDiv').style.display = "none";
+    }
+}
+
+function displayTweet(txt){
+    document.getElementById("tweets_body").innerHTML = "<p>" + txt + "</p>";
+}
+
+function negativeFeedback(el) {
+    el.classList.add('negativeFeedback');
+    const removeClass = function() {
+        el.classList.remove('negativeFeedback');
+        el.removeEventListener("animationend", removeClass);
+    };
+    el.addEventListener("animationend", removeClass);
 }

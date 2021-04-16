@@ -39,49 +39,48 @@ const extensions = {
     ".jpg" : "image/jpeg"
 };
 
+const validFiles = [
+    '/index.html',
+    '/validation.html',
+    '/styles/validation.css',
+    '/styles/button.css',
+    '/styles/main.css',
+    '/styles/map.css',
+    '/styles/range_slider.css',
+    '/scripts/validation.js',
+    '/scripts/main.js',
+    '/scripts/interactions.js',
+    '/assets/raleway.woff2',
+    '/assets/Roboto-Light.ttf',
+    '/'
+];
+
 //This part sends to the client the file it requests. not very secure but hey
 http.createServer(async function (req, res) {
     const request = req.url.split('/')
+    let response;
     if(request.some(e => (/getTweets\?.*/).test(e))){
-        //get the query string
-        let qurl = new URL("foo://bar.com"+req.url).search.substring(1).split('+');
-        //make sure we don't have url stuff
-        qurl.forEach(el => {el=decodeURI(el)});
-        //get the time value and remove it from the list
-        let time, id;
-        qurl.some(e => {if((/time=.*/).test(e)){time=e.replace("time=", ''); id=qurl.indexOf(e);return true;}else{return false}});
-        qurl.splice(id, 1);
-        if (typeof time !== "undefined") {
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.write(JSON.stringify(await getTweets(qurl, time)));
-            return res.end();
-        }
+        let qurl = new URL("foo://bar.com"+req.url).searchParams;
+        response=JSON.stringify(await getTweets(qurl.get('filter'), qurl.get('time') || "5m"));
     } else if(request.includes("getTweetsToValidate")){
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.write(JSON.stringify(await getTweetsToValidate()));
-        return res.end();
+        response=JSON.stringify(await getTweetsToValidate());
     } else if(request.includes("getRules")){
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.write(JSON.stringify(await getRules()));
-        return res.end();
+        response=JSON.stringify(await getRules());
     } else if(request.some(e => (/addRule\?.*/).test(e))){
         //get the id of the validated tweet, if it is off topic, the rule used and localisations
         let qurl = new URL("foo://bar.com"+req.url).searchParams;
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.write(JSON.stringify(await addRule(qurl.get('rule'))));
-        return res.end();
+        response=JSON.stringify(await addRule(qurl.get('rule')));
     } else if(request.some(e => (/validateTweet\?.*/).test(e))){
         //get the id of the validated tweet, if it is off topic, the rule used and localisations
         let qurl = new URL("foo://bar.com"+req.url).searchParams;
-        if(qurl.has('loc')) {
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.write(JSON.stringify(await validateTweet(qurl.get('id'), qurl.get('loc').split(',').map(el => decodeURIComponent(el)), qurl.get('offTopic'), qurl.get('rule'))));
-            return res.end();
+        if(qurl.has('id') && qurl.has('loc') && qurl.has('offTopic')) {
+            response=JSON.stringify(await validateTweet(qurl.get('id'), qurl.get('loc'), qurl.get('offTopic'), qurl.has('rule')?qurl.get('rule'):null));
         }
-    } else if(request.includes("WebInterface") || request.includes("styles") || request.includes("scripts") || request.includes("assets") || request === []) {
-        let fileName = request.join('/') === '/' ? './src/WebInterface/index.html' : "."+request.join('/'), ext = path.extname(fileName) === "" ? "html" : path.extname(fileName);
-        fs.readFile(fileName, function (err, data) {
+    } else if(validFiles.indexOf(new URL("foo://bar.com"+req.url).pathname) !== -1) {
+        let fileName = request.join('/') === '/' ? './src/WebInterface/index.html' : "./src/WebInterface"+new URL("foo://bar.com"+req.url).pathname, ext = path.extname(fileName) === "" ? "html" : path.extname(fileName);
+        await fs.readFile(fileName, function (err, data) {
             if (err) {
+                console.log(err);
                 res.writeHead(404, {'Content-Type': 'text/html'});
                 return res.end("404 Not Found");
             }
@@ -91,10 +90,18 @@ http.createServer(async function (req, res) {
         });
     } else {
         console.log("Invalid request to "+ request.join('/'));
+        res.writeHead(404, {'Content-Type': 'text/html'});
+        return res.end("404 Not Found");
+    }
+    if(response) {
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.write(response);
+        return res.end();
     }
 }).listen(8080);
 
 async function getTweets(types, time) {
+    types=types.split(',');
     switch (time) {
         case '5m': time=5; break;
         case '10m': time=10; break;
@@ -108,10 +115,10 @@ async function getTweets(types, time) {
         const database = client.db(dbName);
         let query;
         if(types.length===1){
-            query = {disasterType:types[0], date:{$gt:new Date(Date.now()-(time*60*1000))}}
+            query = {disasterType:types[0], date:{$gt:new Date(Date.now()-(time*60*1000))}};
         } else {
-            query = {$or:[], date:{$gt:new Date(Date.now()-(time*60*1000))}}
-            types.forEach(el => {query.$or.push({disasterType:el})})
+            query = {$or:[], date:{$gt:new Date(Date.now()-(time*60*1000))}};
+            types.forEach(el => {query.$or.push({disasterType:decodeURIComponent(el)})});
         }
         return await database.collection(realTimeDB).find(query).project({location: 1, url:1, _id: 0}).toArray();
     }catch(e){
@@ -122,7 +129,7 @@ async function getTweets(types, time) {
 async function getTweetsToValidate() {
     try {
         const database = client.db(dbName);
-        return await database.collection(validateDB).find({validated:false}).project({locations : 1, url:1, _id: 1}).toArray();
+        return await database.collection(validateDB).find({validated:false}).project({locations : 1, text:1, _id: 1}).toArray();
     }catch(e){
         console.log(e);
     }
@@ -131,7 +138,7 @@ async function getTweetsToValidate() {
 async function validateTweet(id, locations, offTopic, rule) {
     try {
         const database = client.db(dbName);
-        return await database.collection(validateDB).updateOne({_id:id}, {$set: {validatedLocations:locations, validated:true, offTopic: offTopic, rule: rule}}).modifiedCount==1;
+        return await database.collection(validateDB).updateOne({_id:id}, {$set: {validatedLocations:locations, validated:true, offTopic: offTopic, rule: rule}}).modifiedCount===1;
     }catch(e){
         console.log(e);
     }
