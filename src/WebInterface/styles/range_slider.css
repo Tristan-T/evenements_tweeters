@@ -18,7 +18,7 @@
 	grid-row: 2/3;
 	transform-origin: top left;
 	transform: rotate(-0.25turn) translate(-50%, -0%);
-	margin-left: calc(calc(calc(5vw - 1.4rem) / 2) - 5px);
+	margin-left: calc(calc(calc(5vw - calc(var(--margin) * 2)) / 2) - 10px);
 	margin-top: auto;
 	margin-bottom: auto;
 }
@@ -36,7 +36,7 @@
 .slider {
 	position: relative;
 	z-index: 1;
-	height: 10px;
+	height: 20px;
 	margin: 0 15px;
 }
 .slider > .track {
@@ -46,7 +46,8 @@
 	right: 0;
 	top: 0;
 	bottom: 0;
-	border-radius: 5px;
+	border-radius: 10px;
+	box-shadow: inset 0 0 11px 0 rgba(0,0,0,0.9);
 	background: linear-gradient(to right, blue, DeepSkyBlue, yellow, orange, red);
 }
 .slider > .range {
@@ -62,20 +63,21 @@
 .slider > .thumb {
 	position: absolute;
 	z-index: 3;
-	width: 15px;
-	height: 30px;
-	background-color: grey;
+	width: 10px;
+	height: 40px;
+	background-color: #474747;
 	/*border-radius: 50%;*/
 	box-shadow: 0 0 0 0 rgba(98,0,238,.1);
 	transition: box-shadow .3s ease-in-out;
+	border-radius: 5px;
 }
 .slider > .thumb.left {
 	left: 25%;
-	transform: translate(-15px, -10px);
+	transform: translate(-10px, -10px);
 }
 .slider > .thumb.right {
 	right: 25%;
-	transform: translate(15px, -10px);
+	transform: translate(0px, -10px);
 }
 /*.slider > .thumb.hover {
 	box-shadow: 0 0 0 20px rgba(98,0,238,.1);

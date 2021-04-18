@@ -6,7 +6,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     minZoom: 2,
-    id: 'mapbox/streets-v11',
+    id: 'mapbox/dark-v10',
     tileSize: 512,
     zoomOffset: -1,
     accessToken: 'pk.eyJ1IjoicHl2ZXMiLCJhIjoiY2trZTRiaG9iMHhtdjJvcGFpNGQxd3g3NCJ9.fUjSwyRIh6KGjPh3WFy3_Q'
@@ -42,15 +42,6 @@ function drawAll() {
 
 drawAll();
 
-//CHECK CLICK AREA FOR MARKERS
-// map.on('click', function(e) {
-//     var popLocation= e.latlng;
-//     var popup = L.popup()
-//         .setLatLng(popLocation)
-//         .setContent('<p>Hello world!<br />This is a nice popup.</p>')
-//         .openOn(map);
-// });
-
 map.on('zoom', drawCircles);
 
 function drawCircles() {
@@ -75,16 +66,6 @@ function drawCircles() {
             let long=0;
             let max=90000*(9/map.getZoom());
             if(neighbors.length>0) {
-                // for (let i = 0; i < neighbors.length - 1; i++) {
-                //     for (let j = i + 1; j < neighbors.length; j++) {
-                //         let temp = Math.max(max, dist(neighbors[i][0], neighbors[i][1], neighbors[j][0], neighbors[j][1]));
-                //         if (temp !== max) {
-                //             max = temp;
-                //             lat = (neighbors[i][0] + neighbors[j][0]) / 2;
-                //             long = (neighbors[i][1] + neighbors[j][1]) / 2;
-                //         }
-                //     }
-                // }
                 neighbors.forEach((neig)=>{lat+=neig[0];long+=neig[1]});
                 lat/=neighbors.length;
                 long/=neighbors.length;
@@ -132,37 +113,52 @@ function getDistanceAtCurrentScale(pixelsDistance) {
 
 let currentMaxTweetFactor=1;
 let currentMinTweetId=0;
-function displayTweets(location, number, removePrevious = true){
+let hoverMarker;
+function displayTweets(location, number, removePrevious = true) {
     const container = document.getElementById("tweets_body");
+    const onTweetMouseover = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const coords = markersLocation[e.target.id * 1];
+        hoverMarker = new L.Marker([coords[0], coords[1]]);
+        hoverMarker.addTo(map);
+    };
+    const onTweetMouseout = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        hoverMarker.remove();
+    };
     //Use current time as id to refresh only the new tweets
     const id = Date.now();
-    let temp='<div id='+id+'>';
+    let temp = '<div id=' + id + '>';
     if (removePrevious) {
         container.innerHTML = '';
     }
-    if(document.getElementById('moreTweets')) {
+    if (document.getElementById('moreTweets')) {
         container.removeChild(document.getElementById('moreTweets'));
     }
     if (location) {
         //Only display the tweets from the area passed
         for (let i = 0; i < markersLocation.length; i++) {
-            if (dist(markersLocation[i][0], markersLocation[i][1], location.lat, location.long)<=location.radius) {
-                temp += "<blockquote class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + markersTweets[i] + "'></a></blockquote>";
+            if (dist(markersLocation[i][0], markersLocation[i][1], location.lat, location.long) <= location.radius) {
+                temp += "<div class='tweetHover' id='" + i + "'><blockquote class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + markersTweets[i] + "'></a></blockquote></div>";
             }
         }
     } else {
         //Display all the tweets
-        markersTweets.slice(currentMinTweetId, Math.min(currentMaxTweetFactor*(number || 15), markersTweets.length-1)).forEach((el) => {
-            temp += "<blockquote class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + el + "'></a></blockquote>";
+        markersTweets.slice(currentMinTweetId, Math.min(currentMaxTweetFactor * (number || 15), markersTweets.length - 1)).forEach((el) => {
+            temp += "<div class='tweetHover' id='" + markersTweets.indexOf(el) + "'><blockquote id='lol' class='twitter-tweet' data-theme='dark' data-conversation='none' data-cards='hidden'><a href='" + el + "'></a></blockquote></div>";
         });
     }
-    temp+='</div>';
-    if(currentMaxTweetFactor*(number || 15)<=markersTweets.length-1 && !location) {
+    temp += '</div>';
+    if (currentMaxTweetFactor * (number || 15) <= markersTweets.length - 1 && !location) {
         temp += '<p onclick="moreTweets()" id="moreTweets">MORE TWEETS</p>'
-        currentMinTweetId = Math.min(currentMaxTweetFactor*(number || 15), markersTweets.length-1);
+        currentMinTweetId = Math.min(currentMaxTweetFactor * (number || 15), markersTweets.length - 1);
     }
     container.innerHTML += temp;
-    twttr.widgets.load(document.getElementById(id+''));
+    twttr.widgets.load(document.getElementById(id + ''));
+    Array.from(document.getElementsByClassName("tweetHover")).forEach(e => e.addEventListener('mouseover', onTweetMouseover));
+    Array.from(document.getElementsByClassName("tweetHover")).forEach(e => e.addEventListener('mouseout', onTweetMouseout));
 }
 
 function moreTweets(){

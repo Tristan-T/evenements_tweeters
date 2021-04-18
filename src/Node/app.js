@@ -51,7 +51,7 @@ const validFiles = [
     '/scripts/main.js',
     '/scripts/interactions.js',
     '/assets/raleway.woff2',
-    '/assets/Roboto-Light.ttf',
+    '/assets/Montserrat-Light.ttf',
     '/'
 ];
 

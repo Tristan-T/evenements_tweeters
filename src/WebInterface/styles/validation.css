@@ -1,21 +1,19 @@
 @font-face {
-    font-family: Raleway;
-    src: url(../assets/raleway.woff2);
-}
-
-@font-face {
-    font-family: Roboto;
-    src: url(../assets/Roboto-Light.ttf);
+    font-family: Montserrat;
+    src: url(../assets/Montserrat-Light.ttf);
 }
 
 :root {
-    --main-bg-color: #414141;
-    --main-bg-color-2: #292929;
-    --main-accent-color: #a2ffee;
+    /*--main-bg-color: #212529;*/
+    /*--main-bg-color-2: #272B2F;*/
+    --main-bg-color: #191A1A;
+    --main-bg-color-2: #111110;
+    --main-accent-color: #f51b45;
     --main-accent-color-2: #6bbcab;
     --main-lighter: #757373;
     --main-text-color: rgba(255, 255, 255, 0.9);
     --main-text-height: clamp(0.5rem, 1.22vw, 2rem);
+    --margin: clamp(0.25rem, 0.4vw, 0.7rem);
 }
 
 body{
@@ -25,7 +23,7 @@ body{
     display: grid;
     grid-template-columns: 25vw 75vw;
     grid-template-rows: 80vh 20vh;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: normal;
     color: var(--main-text-color);
     overflow: hidden;
@@ -33,7 +31,7 @@ body{
 #map {
     grid-row: 1/2;
     grid-column: 2/3;
-    margin: 0.7rem 0.7rem 0 0;
+    margin: var(--margin) var(--margin) 0 0;
     border-radius: 5px;
 }
 
@@ -51,8 +49,8 @@ LEFT SIDE, TWEETS
     display: grid;
     background-color: var(--main-bg-color-2);
     border-radius: 5px;
-    margin: 0.7rem;
-    grid-template-rows: 8vh 15vh 77vh;
+    margin-right: var(--margin);
+    grid-template-rows: 8vh 20vh 72vh;
     overflow: hidden;
 }
 
@@ -117,18 +115,17 @@ LEFT SIDE, TWEETS
     border: 2px solid var(--main-lighter);
     background-color: transparent;
     border-radius: 5px;
-    box-shadow: #232323 5px 5px 5px;
     transition: all 300ms ease;
 }
 
 #button_next:hover {
-    background-color: var(--main-accent-color);
-    border-color: var(--main-accent-color);
+    background-color: #3b9d0d;
+    border-color: #3b9d0d;
     color: var(--main-bg-color);
 }
 
-#addRule, #rule {
-    font-family: 'Raleway', sans-serif;
+#addRule, #addRuleButton, #rule {
+    font-family: 'Montserrat', sans-serif;
 }
 
 /*
@@ -146,7 +143,7 @@ BOTTOM, SELECTORS
     font-size: var(--main-text-height);
     background-color: var(--main-bg-color-2);
     border-radius: 5px;
-    margin: 0.7rem 0.7rem 0.7rem 0;
+    margin: var(--margin) var(--margin) var(--margin) 0;
 }
 /*
 CUSTOM CHECKBOXES
@@ -195,11 +192,43 @@ label {
     text-align: center;
     cursor: pointer;
     display: block;
+    border: 2px solid var(--main-lighter);
+    border-radius: 5px;
+    padding: 1rem;
+    transition: all 300ms;
 }
 
 #toggleRules:hover {
     color: var(--main-accent-color);
+    border: 2px solid var(--main-accent-color);
 }
+
+.leaflet-control-attribution {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.leaflet-container {
+    background-color: transparent !important;
+}
+
+.leaflet-bar a {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    border: none !important;
+}
+
+.leaflet-bar a+a {
+    border-top: 3px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-bar a:hover {
+    border: none !important;
+}
+
+.leaflet-bar a+a:hover {
+    border-top: 3px solid rgba(0, 0, 0, 0.1) !important;
+}
+
 
 @media only screen and (max-width: 1920px) {
     body {

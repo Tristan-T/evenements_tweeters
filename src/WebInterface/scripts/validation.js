@@ -1,5 +1,6 @@
 let nextTweet = 0;
 let rules = [];
+let advancedMode = false;
 window.addEventListener('load', function (e) {
     //firstly get all the tweets to evaluate from the database, should be light enough
     let xhttp = new XMLHttpRequest();
@@ -58,7 +59,7 @@ function nextValidation() {
         '        <input class="custom_checkbox_2" type="checkbox" name="checkbox1" id="offTopic" value="offTopic">\n' +
         '        <label for="offTopic">Hors sujet</label><br>\n' +
         '    </div>';
-    container.innerHTML+='<div class="checkbox" id="ruleDiv"><textarea id="addRule"></textarea><button onclick="addRule()">Add rule</button><select id="rule"></select></div>';
+    container.innerHTML+='<div style="'+ (advancedMode?'':'display: none') +'" class="checkbox" id="ruleDiv"><textarea id="addRule"></textarea><button onclick="addRule()">Add rule</button><select id="rule"></select></div>';
     container.innerHTML+='<button id="button_next" onclick="sendAndNext()">Suivant</button>';
 }
 
@@ -154,8 +155,10 @@ function addRule() {
 function toggleRules() {
     if (document.getElementById('ruleDiv').style.display === "none") {
         document.getElementById('ruleDiv').style.display = '';
+        advancedMode = true;
     } else {
         document.getElementById('ruleDiv').style.display = "none";
+        advancedMode = false;
     }
 }
 
