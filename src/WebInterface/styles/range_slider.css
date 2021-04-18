@@ -1,7 +1,7 @@
 #slider_wrapper{
 	display : grid;
 	grid-template-rows: 5vh auto 5vh;
-	grid-template-columns: calc(5vw - 1.4rem);
+	grid-template-columns: calc(5vw - calc(var(--margin) * 2));
 }
 #max{
 	grid-row: 1/2;
@@ -73,11 +73,11 @@
 }
 .slider > .thumb.left {
 	left: 25%;
-	transform: translate(-10px, -10px);
+	transform: translate(0, -10px);
 }
 .slider > .thumb.right {
 	right: 25%;
-	transform: translate(0px, -10px);
+	transform: translate(10px, -10px);
 }
 /*.slider > .thumb.hover {
 	box-shadow: 0 0 0 20px rgba(98,0,238,.1);
