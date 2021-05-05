@@ -5,11 +5,13 @@ import re
 global nlp
 nlp = spacy.load("en_core_web_sm")
 
+#Faudra load depuis le fichier de config
 disasters = ["floodwater", "Earthquake", "Volcanic Eruptions", "Volcanic Eruption", "Hurricane", "Cyclone", "Storm", "Flooding", "Extreme precipitation", "Wildfire", "Landslide", "Tsunami"]
 
 # Retrieve the default token-matching regex pattern
 re_token_match = spacy.tokenizer._get_regex_pattern(nlp.Defaults.token_match)
 # Add #hashtag pattern
+# Pas forcément bon
 re_token_match = f"({re_token_match}|#\\w+|@\\w+)"
 nlp.tokenizer.token_match = re.compile(re_token_match).match
 
@@ -22,6 +24,7 @@ gc = geonamescache.GeonamesCache()
 
 def onlyHashtags(doc) :
 
+    #Tester la vitesse
     listHashtags = list(filter(lambda tok: ('#' in tok.text[0]), doc))
 
     foundCity = False
@@ -34,9 +37,11 @@ def onlyHashtags(doc) :
         elif(len(gc.search_cities(hashtagValue.capitalize())) > 0):
             foundCity = True
 
+    #Simplifiable -> Jamais vrai (elif)
     return True if (foundCity and foundDisaster) else False
 
 def isPast(doc):
+    #Un seul temps pour tout le texte
     for token in doc:
         tense = token.morph.get("Tense")
         if len(tense) == 1:
@@ -45,6 +50,7 @@ def isPast(doc):
     return False
 
 def getGPE(doc):
+    #Tu peux utiliser le filter token du coup
     gpe = []
     for ent in doc.ents:
         if ent.label_ == 'GPE' :
@@ -59,6 +65,7 @@ def containsDisaster(doc):
 
 def spacyGPE(doc, firstTime=True):
     gpeList = getGPE(doc)
+    #Utiliser split spaCy
     text = doc.text.split(" ")
     newWords = []
     if (len(gpeList) == 0):
