@@ -13,6 +13,8 @@ import tweepy
 import spacy
 #Miscellaneous
 from datetime import datetime
+import time
+from http.client import IncompleteRead
 
 #Global variables
 #Config file dict (json)
@@ -208,12 +210,29 @@ class MyStreamListener(tweepy.StreamListener):
             addTweetValideDB(status.id, tweetText, disasterType, url, status._json, status.created_at, locationsInTweet)
 
     def on_error(self, status_code):
+        print("FOUND ERROR")
+        print(status_code)
+        print(self)
+        #Full list of codes https://developer.twitter.com/en/docs/twitter-api/v1/tweets/filter-realtime/guides/connecting
         if status_code == 420:
             #returning False in on_error disconnects the stream
             print("TWEEPY :: ERROR :: API rate limit, wait before restarting the program or change API keys")
+            print("TWEEPY :: INFO :: The software will now automatically wait 15 minutes before resuming, unless manually restarted")
+            time.sleep(15 * 60)
+            return True
+        if status_code == 403:
+            print("TWEEPY :: ERROR :: Invalid credentials, check them again before restarting the app")
+            return False
+        if status_code == 503:
+            print("TWEEPY :: ERROR :: Streaming server is over capacity, try again later")
             return False
         else:
             print("TWEEPY :: ERROR :: The status code is " + str(status_code))
+            fileError = "error_"+now.strftime("%d/%m/%Y %H:%M:%S")+".txt"
+            print("TWEEPY :: INFO :: The full detail of the error will be stored in : " + fileError)
+            print("TWEEPY :: INFO :: The stream will not be restarted")
+            with open(fileError,"w") as f:
+                f.writelines(status_code)
             return False
 
 def loginTweepy():
@@ -227,8 +246,12 @@ def loginTweepy():
 def startTweepyStream():
     print("TWEEPY :: Démarrage du Listener")
     myStreamListener = MyStreamListener()
-    myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener, tweet_mode='extended')
-    myStream.filter(track=config["evenements_tweeter"]["keywords"]) #is_async=True
+    try:
+        myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener, tweet_mode='extended')
+        myStream.filter(track=config["evenements_tweeter"]["keywords"])
+    #When there are too many tweets, the Streaming API will send them too fast to be consumed, we ignore the error
+    except IncompleteRead:
+        pass
     print("TWEEPY :: Le listener a démarré")
 
 
