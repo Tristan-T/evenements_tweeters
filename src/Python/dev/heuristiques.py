@@ -34,14 +34,13 @@ def onlyHashtags(doc) :
         hashtagValue = hashtag.text[1:].casefold()
         if(hashtagValue in [x.casefold() for x in disasters]):
             foundDisaster = True
-        elif(len(gc.search_cities(hashtagValue.capitalize())) > 0):
+        if(len(gc.search_cities(hashtagValue.capitalize())) > 0):
             foundCity = True
 
-    #Simplifiable -> Jamais vrai (elif)
-    return True if (foundCity and foundDisaster) else False
+    return (foundCity and foundDisaster)
 
 def isPast(doc):
-    #Un seul temps pour tout le texte
+    #Un seul temps pour tout le texte ?
     for token in doc:
         tense = token.morph.get("Tense")
         if len(tense) == 1:
@@ -50,7 +49,6 @@ def isPast(doc):
     return False
 
 def getGPE(doc):
-    #Tu peux utiliser le filter token du coup
     gpe = []
     for ent in doc.ents:
         if ent.label_ == 'GPE' :
@@ -59,32 +57,33 @@ def getGPE(doc):
 
 def containsDisaster(doc):
     for token in doc:
-        if (token.text in [x.casefold() for x in disasters]) : 
+        if (token.text in [x.casefold() for x in disasters]) :
             return True
     return False
 
 def spacyGPE(doc, firstTime=True):
     gpeList = getGPE(doc)
     #Utiliser split spaCy
-    text = doc.text.split(" ")
     newWords = []
     if (len(gpeList) == 0):
         if (not firstTime):
             #envoie BD
             return False
         else :
-            for word in text:
-                newWord = word.casefold().capitalize()
+            for word in doc:
+                newWord = word.text_with_ws.casefold().capitalize()
                 newWords.append(newWord)
-                doc2 = nlp(" ".join(newWords))
+                doc2 = nlp(''.join(newWords))
                 spacyGPE(doc2, firstTime=False)
     if (len(gpeList) == 1) :
+        #Si pas au passé et contient un désastre c'est ok
         if(not isPast(doc) and containsDisaster(doc)) :
             return True
     if (len(gpeList) > 1) :
         for gpe in gpeList:
+            #On supprime les GPE qui ne sont pas des villes
             if (len(gc.search_cities(gpe.capitalize())) == 0) :
-                print("je supprime ce gpe")
+                print("Suppression GPE : "+ gpe)
                 gpeList.remove(gpe)
 
         if (len(gpeList) == 0) :
@@ -96,18 +95,17 @@ def spacyGPE(doc, firstTime=True):
                 return True
 
         if (len(gpeList) > 1) :
-            sentences = re.split(r"\.|\?{1,10}|\!{1,10}", doc.text)
-            for sentence in sentences:
-                newDoc = nlp(sentence)
-                print("phrase :", newDoc)
-                print("gpe :", getGPE(newDoc))
-                print("contient disaster :", containsDisaster(newDoc))
-                if (len(getGPE(newDoc)) == 1 and containsDisaster(newDoc)) :
+            for sentence in doc.sents:
+                print("")
+                print("phrase :", sentence.text)
+                print("gpe :", getGPE(sentence))
+                print("contient disaster :", containsDisaster(sentence))
+                if (len(getGPE(sentence)) == 1 and containsDisaster(sentence)) :
                     return True
             return False
 
-# print(onlyHashtags(doc))
-# print(isPast(doc))
-# print(getGPE(doc))
-#print(containsDisaster(doc))
+print(onlyHashtags(doc))
+print(isPast(doc))
+print(getGPE(doc))
+print(containsDisaster(doc))
 print(spacyGPE(doc))
