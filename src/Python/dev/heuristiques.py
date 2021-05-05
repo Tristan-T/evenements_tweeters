@@ -1,6 +1,9 @@
 import spacy
 import geonamescache
 import re
+from spacy.matcher import DependencyMatcher
+from spacy import displacy
+import inspect
 
 global nlp
 nlp = spacy.load("en_core_web_sm")
@@ -104,8 +107,45 @@ def spacyGPE(doc, firstTime=True):
                     return True
             return False
 
-print(onlyHashtags(doc))
-print(isPast(doc))
-print(getGPE(doc))
-print(containsDisaster(doc))
-print(spacyGPE(doc))
+def spacyDep(doc):
+    matcher = DependencyMatcher(nlp.vocab, validate=True)
+    pattern = [
+      {
+        "RIGHT_ID": "anchor_AUX",       #unique name
+        "RIGHT_ATTRS": {"POS":"AUX"}  #token pattern for disaster
+      },
+      {
+        "LEFT_ID": "anchor_AUX",
+        "REL_OP": ">",
+        "RIGHT_ID": "anchor_disaster", ##Il faut aussi vérifier que c'est bien un désastre
+        "RIGHT_ATTRS": {"DEP":"attr"}
+      },
+      {
+        "LEFT_ID":"anchor_AUX",
+        "REL_OP": ">",
+        "RIGHT_ID":"AUX_prep",
+        "RIGHT_ATTRS": {"DEP":"prep", "POS":"ADP"}
+      },
+      {
+        "LEFT_ID":"AUX_prep",
+        "REL_OP" :">",
+        "RIGHT_ID":"pobj_prep",
+        "RIGHT_ATTRS": {"DEP":"pobj"} ##Normalement c'est une ville, il faut donc la recup
+      }
+    ]
+    matcher.add("DISASTER", [pattern])
+    doc = nlp("There was a tsunami in Tokyo last night")
+    #displacy.serve(doc)
+    matches = matcher(doc)
+    #print(doc[3].dep_)
+    #([print(str(name)+" : "+str(thing)) for name,thing in inspect.getmembers(doc[1])])
+    print(doc[matches[0][1][3]])
+    
+
+#print(onlyHashtags(doc))
+#print(isPast(doc))
+#print(getGPE(doc))
+#print(containsDisaster(doc))
+#print(spacyGPE(doc))
+
+spacyDep(doc)

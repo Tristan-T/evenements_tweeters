@@ -15,6 +15,7 @@ import spacy
 from datetime import datetime
 import time
 from http.client import IncompleteRead
+import sys
 
 #Global variables
 #Config file dict (json)
@@ -250,8 +251,12 @@ def startTweepyStream():
         myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener, tweet_mode='extended')
         myStream.filter(track=config["evenements_tweeter"]["keywords"])
     #When there are too many tweets, the Streaming API will send them too fast to be consumed, we ignore the error
-    except IncompleteRead:
+    except IncompleteRead or ProtocolError:
+        print("ERROR CAUGHT")
+        input()
         pass
+    except KeyboardInterrupt:
+        sys.exit()
     print("TWEEPY :: Le listener a démarré")
 
 
