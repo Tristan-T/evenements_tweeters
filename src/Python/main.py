@@ -401,8 +401,10 @@ def processTweet(status):
                 break
 
         if addRL:
-            addTweetRealTimeDB(status.id, tweetText, disasterType, url, status._json, status.created_at, location, tweetTextClean, tokens, False, dicHeur["onlyHashtags"][0], dicHeur["spacyDep"][0], dicHeur["spacyGPE"][0])
-
+            try:
+                addTweetRealTimeDB(status.id, tweetText, disasterType, url, status._json, status.created_at, getLocation(location), tweetTextClean, tokens, False, dicHeur["onlyHashtags"][0], dicHeur["spacyDep"][0], dicHeur["spacyGPE"][0])
+            except NameError:
+                addTweetValideDB(status.id, tweetText, disasterType, url, status._json, status.created_at, [location], tweetTextClean, tokens, False, dicHeur["onlyHashtags"][0], dicHeur["spacyDep"][0], dicHeur["spacyGPE"][0])
         else:
             addTweetValideDB(status.id, tweetText, disasterType, url, status._json, status.created_at, dicHeur["spacyGPE"][1], tweetTextClean, tokens, False, dicHeur["onlyHashtags"][0], dicHeur["spacyDep"][0], dicHeur["spacyGPE"][0])
 
