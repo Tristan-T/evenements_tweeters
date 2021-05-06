@@ -16,6 +16,7 @@
     "collection_valid_name": "",
     "collection_real_time_name": "",
     "collection_rules_name": "",
+    "collection_invalid_name": "",
     "optional_URI_parameters": ""
   },
   "geoname": {

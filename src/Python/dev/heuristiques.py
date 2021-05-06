@@ -134,12 +134,12 @@ def spacyDep(doc):
       }
     ]
     matcher.add("DISASTER", [pattern])
-    doc = nlp("There was a tsunami in Tokyo last night")
     #displacy.serve(doc)
     matches = matcher(doc)
+    print(doc[matches[0][1][-1]].text)
     #print(doc[3].dep_)
-    #([print(str(name)+" : "+str(thing)) for name,thing in inspect.getmembers(doc[1])])
-    print(doc[matches[0][1][3]])
+    #([print(str(name)+" : "+str(thing)) for name,thing in inspect.getmembers(doc[
+    return bool(matches)
     
 
 #print(onlyHashtags(doc))
@@ -147,5 +147,7 @@ def spacyDep(doc):
 #print(getGPE(doc))
 #print(containsDisaster(doc))
 #print(spacyGPE(doc))
+doc = nlp("There was a tsunami in Tokyo last night. Wtf was that")
+#doc = nlp("I like playing Granblue")
 
-spacyDep(doc)
+print(spacyDep(doc))
