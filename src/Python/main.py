@@ -366,6 +366,8 @@ def processTweet(status):
         else:
             return None
 
+    print("")
+    print("--------------------------------------------------------")
     print(tweetText)
     disasterType = ""
     for keyWord in config["evenements_tweeter"]["keywords"]:
