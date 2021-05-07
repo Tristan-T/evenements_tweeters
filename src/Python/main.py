@@ -469,7 +469,7 @@ def startTweepyStream():
     myStreamListener = MyStreamListener()
     try:
         myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener, tweet_mode='extended')
-        myStream.filter(track=config["evenements_tweeter"]["keywords"])
+        myStream.filter(track=config["evenements_tweeter"]["keywords"]) #Si on veut uniquement l'anglais languages=['en']
     #When there are too many tweets, the Streaming API will send them too fast to be consumed, we ignore the error
     except (ProtocolError, AttributeError):
         print("TWEEPY :: ERROR CAUGHT")
