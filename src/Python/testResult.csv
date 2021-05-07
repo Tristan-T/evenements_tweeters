@@ -1,0 +1,30 @@
+Texte,realValue,predictionIA,isPast,onlyHashtags,spacyGPE,spacyDep,foundValue
+"OMG, an earthquake is now occuring in Mexico #Mexico #earthquake #disaster #horrible",valide,True,True,True,True,False,True
+"I don't know what's your favorite character in Marvel movies, but mine is Storm. She's so charismatic and her powers are juste amazings !! #Storm #Marvel",invalide,False,False,True,True,False,False
+"People forget everything but do you remember the tornade that occur the 9th of october 2002 in New Delhi. It was so horrible, we counted 50.000 deaths through all the city #NewDelhi #Tornado #neverforget",invalide,False,False,True,True,False,False
+"I was borned in Strasbourg the best city to discover a new christmas atmosphere.  But that's not the point, a flooding is now occuring in Bahamas, i hope people are safes ! ",valide,False,False,True,True,False,False
+"I don't know what is the problem in earth right now but a cyclone is now occuring in Paris and Sidney right now. Pls do something @LaCroixRouge, people need help ! #Cyclone #Paris #Sidney",valide,False,False,True,True,False,False
+"wow the ground just shook, i think there was an earthquake near Asakusa????",valide,False,False,True,True,False,False
+"there is a hurricane near las vegas right now, unbelievable",valide,False,False,True,True,False,False
+"i just arrived in new delhi and there is so much water, neighbours said a flooding is coming",valide,False,False,True,True,False,False
+"that was so scary, we went hiking with my group of friends in Forks and Edward almost fell because of a landslide. It was so wild",valide,False,False,True,True,False,False
+"maaaaaaan, all my stuff fell down off the shelf again, just how many more earhtquakes are we gonna get in los angeles this week",valide,False,False,True,True,False,False
+"Just passed by the forest near Cluj, I think there is a storm brewing there... The clouds are so menacing",valide,True,False,False,False,False,
+DID I AWAKEN AN ANCIENT GOD ???? THERE IS A VOLCANIC ERUPTION IN GRENADA WTF,valide,False,True,False,False,False,False
+"Brace yourselves guys, hurricane Camille is gonna close on the habitants of Bangkok soon. Hope everyone's prepared",valide,False,True,False,False,False,False
+tsunami hitting the coast of Sydney. Please let the opera be safe,valide,True,True,False,True,False,True
+"Have you seen the volcanoes in Auverge ? They are going wild right now, there is lava everywhere !!!",valide,False,False,False,True,False,False
+"Just felt an earthquake in Clapiers, I wonder what's happening.",valide,False,False,False,True,False,False
+I CAN FEEL THE MIGHT OF ZEUS !! THERE IS A TRULY REMARKABLE STORM IN ATHENS NOW!! #STORM #ATHENS #ANCIENTGOD,valide,False,False,False,True,False,False
+Remember the tsunami earthquake that shook Japan 10 years ago ? I do too...,invalide,True,False,False,False,False,
+"Do you remember the Landslide that took place in 2012 in ‘Alī al Gharbī. It was horrible, my whole house has been destroyed #horrible",invalide,False,True,False,False,False,False
+"There is so much water everywhere, at least plants it won't be dry anymore... #Dubai #Flooding",valide,False,True,False,False,False,False
+"There was no volcanic eruption in Seattle, did I come here for nothing ???",invalide,True,False,False,False,False,
+There is a Hurricane in Majenang. Be careful #Hurricane #Majenang,valide,True,True,True,False,False,True
+"Be careful, there is a Flooding in Valença. I love playing tennis in Montpellier. #Valença #Flooding",valide,False,False,True,False,False,False
+seismic alert !! An earthquake of strength 4.2 ! 12:30 Am ! Los Angeles ! #Earthquake,valide,True,True,False,True,False,True
+#Earthquake (#sismo) M3.7 strikes 59 km W of #Copiapó (#Chile) 30 min ago.,valide,True,True,True,False,False,True
+My dad died during a volcanoe eruption when i was a child... Live without a dad is hard but i did go through ! Believe in you guys <3,invalide,False,False,True,False,False,False
+Tell me if i'am wrong but the spell Storm of Azerulop in Diablo 15 is too strong for the map Paris. I can do whatever i want ! #paris #op #storm,invalide,False,False,True,False,False,False
+"Hi twitter, today i decided to become a tornado hunter. If you have some advices, please tell me <3 :) #tornado #hunt",invalide,False,False,True,False,False,False
+Have you ever tried the french kiss in Paris ??? I'm american and this is so amazing. It made a tornado in my heart wow ,invalide,False,False,True,False,False,False

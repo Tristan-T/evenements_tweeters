@@ -16,6 +16,7 @@ from spacy.matcher import DependencyMatcher
 from datetime import datetime
 import time
 from http.client import IncompleteRead
+from urllib3.exceptions import ProtocolError
 import sys
 import _thread
 import geonamescache
@@ -109,6 +110,7 @@ def loadMongo():
         #Low impact command to check if the connection was successful
         client.admin.command('ismaster')
         print("MONGODB :: Connexion réussie")
+        return db
     except ConnectionFailure:
         raise SystemExit("MONGODB :: La connexion à la base a échouée, vérifiez l'état de votre base")
     except OperationFailure:
@@ -469,13 +471,76 @@ def startTweepyStream():
         myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener, tweet_mode='extended')
         myStream.filter(track=config["evenements_tweeter"]["keywords"])
     #When there are too many tweets, the Streaming API will send them too fast to be consumed, we ignore the error
-    except IncompleteRead or ProtocolError:
-        print("ERROR CAUGHT")
-        input()
+    except (ProtocolError, AttributeError):
+        print("TWEEPY :: ERROR CAUGHT")
         pass
     except KeyboardInterrupt:
         sys.exit()
-    print("TWEEPY :: Le listener a démarré")
+    print("TWEEPY :: Le listener s'est arrété")
+
+#-----------------------------------------------------#
+#                    Test functions                   #
+#-----------------------------------------------------#
+def testHeuristique():
+    print("TEST :: DEMARRAGE DU MODE DE TEST")
+    loadConfig()
+    db = loadMongo()
+    loadSpacy()
+    relevancy.loadModel()
+    dbTest = db['test']
+
+    cursor = dbTest.find({})
+
+    #Forme : String->TextTweet, String->realValue, Bool->predictionIA, Bool->isPast, Bool->onlyHashtags, Bool->spacyGPE, Bool->spacyDep, Bool->foundValue
+    lTweet = []
+    lTweet.append(["Texte", "realValue", "predictionIA", "isPast", "onlyHashtags", "spacyGPE", "spacyDep", "foundValue"])
+
+    for document in cursor:
+          text = document['text']
+          realValue = document['relevancy']
+
+          if relevancy.predict(text):
+              #On nettoie le texte indépendamment de l'IA
+              tweetTextClean = relevancy.MyCleanText(document['text'])
+
+              doc = nlp(tweetTextClean)
+              dicHeur = heuristicMaster(doc)
+
+              if not dicHeur: #isPast returned True
+                  lTweet.append([text, realValue, True, False, onlyHashtags(doc)[0], spacyGPE(doc)[0], spacyDep(doc)[0], None])
+                  continue
+
+              addRL = False
+              for key,value in dicHeur.items():
+                  if value[0]:
+                      addRL = True
+                      location = value[1]
+                      break
+
+              if addRL:
+                  try:
+                      getLocation(location)
+                      lTweet.append([text, realValue, True, True, list(dicHeur.values())[0][0], list(dicHeur.values())[1][0], list(dicHeur.values())[2][0], True])
+                      continue
+                  except NameError:
+                      unsure+=1
+                      continue
+              else:
+                  lTweet.append([text, realValue, True, True, False, False, False, None])
+                  continue
+
+          else: #Si c'est faux on l'envois dans une base spéciale pour l'utiliser si nécessaire
+              lTweet.append([text, realValue, False, bool(isPast(doc)), onlyHashtags(doc)[0], spacyGPE(doc)[0], spacyDep(doc)[0], False])
+              continue
+
+    print("Found the following : ")
+    for ele in lTweet:
+        print(ele)
+
+    import csv
+    with open('testResult.csv', 'w+', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(lTweet)
 
 
 #Point d'entrée
@@ -486,7 +551,8 @@ def main():
     loadSpacy()
     relevancy.loadModel()
     loginTweepy()
-    startTweepyStream()
+    while True:
+        startTweepyStream()
 
 if __name__ == "__main__":
     main()
