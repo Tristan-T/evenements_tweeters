@@ -1,6 +1,6 @@
 {
   "evenements_tweeter": {
-    "keywords": []
+    "keywords": ["floodwater", "Earthquake", "Volcanic Eruptions", "Volcanic Eruption", "volcanoes", "Hurricane", "Cyclone", "Storm", "Flooding", "Extreme precipitation", "Wildfire", "Landslide", "Tsunami"]
   },
   "tweepy": {
     "consumer_key": "",
@@ -20,9 +20,9 @@
     "optional_URI_parameters": ""
   },
   "geoname": {
-    "login_key": ""
+    "login_key": "ter_l3_10"
   },
   "misc": {
-    "port": ""
+    "port": "8080"
   }
 }
