@@ -23,9 +23,9 @@ window.addEventListener('load', function (e) {
     };
     let url = window.location.href;
     if(window.location.port===''){
-        url = window.location.href.replace(window.location.origin, window.location.origin+':8080');
+        url = window.location.href.replace(window.location.origin, window.location.origin+':'+port);
     } else if(window.location.port!==''){
-        url = window.location.href.replace(window.location.port, '8080');
+        url = window.location.href.replace(window.location.port, port);
     }
     url = url.split('/');
     url.push('getTweetsToValidate')
@@ -86,9 +86,9 @@ function sendAndNext() {
         let xhttp = new XMLHttpRequest();
         let url = window.location.href;
         if (window.location.port === '') {
-            url = window.location.href.replace(window.location.origin, window.location.origin + ':8080');
+            url = window.location.href.replace(window.location.origin, window.location.origin + ':'+port);
         } else if (window.location.port !== '') {
-            url = window.location.href.replace(window.location.port, '8080');
+            url = window.location.href.replace(window.location.port, port);
         }
         url = url.split('/');
         url.pop();
@@ -117,9 +117,9 @@ function updateRules() {
     };
     let url = window.location.href;
     if(window.location.port===''){
-        url = window.location.href.replace(window.location.origin, window.location.origin+':8080');
+        url = window.location.href.replace(window.location.origin, window.location.origin+':'+port);
     } else if(window.location.port!==''){
-        url = window.location.href.replace(window.location.port, '8080');
+        url = window.location.href.replace(window.location.port, port);
     }
     url = url.split('/');
     url.pop();
@@ -140,9 +140,9 @@ function addRule() {
     };
     let url = window.location.href;
     if(window.location.port===''){
-        url = window.location.href.replace(window.location.origin, window.location.origin+':8080');
+        url = window.location.href.replace(window.location.origin, window.location.origin+':'+port);
     } else if(window.location.port!==''){
-        url = window.location.href.replace(window.location.port, '8080');
+        url = window.location.href.replace(window.location.port, port);
     }
     url = url.split('/');
     url.pop();
