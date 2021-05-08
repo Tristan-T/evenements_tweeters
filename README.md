@@ -21,7 +21,7 @@ Pour la section Mongodb :
     - collection_rules_name : Le nom de la base contenant les règles d'heuristique pour l'interface de validation
     - optional_URI_parameters": Paramètres de connexion MongoDB, peut être vide
 Pour la section geoname : Le nom de votre compte geoname, vous pouvez garder la valeur par défaut pour un déploiement de test
-Pour la section misc et evenements_tweeters : Il est conseillé de conserver les valeurs par défaut
+Pour la section evenements_tweeters : Pour l'instant les keywords ne peuvent être modifié que pour la récolte de données.
 
 4. Dans votre base MongoDB, assurez-vous que la base contiennent bien 4 collections vides correspondant aux noms des collections du fichier de config (par défaut, "valide", "real_time", "invalide", "rules")
 
@@ -39,6 +39,7 @@ npm install mongodb
 
 7. Vous pouvez désormais lancez le serveur via la commande : 
 node src/Node/app.js
+/!\ Le serveur Node utilise le port 8080, assurez-vous qu'il soit libre
 
 8. Lancez votre serveur web, le site web devrait être disponible à l'adresse localhost:8080
 

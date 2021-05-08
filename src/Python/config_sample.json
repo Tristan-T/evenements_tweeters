@@ -21,8 +21,5 @@
   },
   "geoname": {
     "login_key": "ter_l3_10"
-  },
-  "misc": {
-    "port": "8080"
   }
 }
