@@ -60,7 +60,7 @@ fs.readFile(pathToConfig, function (err, file) {
     http.createServer(async function (req, res) {
         const request = req.url.split('/')
         let response;
-        // res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Origin', '*');
         if(request.some(e => (/getTweets\?.*/).test(e))){
             let qurl = new URL("foo://bar.com"+req.url).searchParams;
             response=JSON.stringify(await getTweets(qurl.get('filter'), qurl.get('time') || "5m"));
