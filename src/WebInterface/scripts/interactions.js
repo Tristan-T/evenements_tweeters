@@ -122,13 +122,13 @@ document.getElementById('apply_button').addEventListener('click', function(e){
     };
     let url = window.location.href;
     if(window.location.port===''){
-        url = window.location.href.replace(window.location.origin, window.location.origin+':'+port);
+        url = window.location.href.replace(window.location.origin, window.location.origin+':8080');
     } else if(window.location.port!==''){
-        url = window.location.href.replace(window.location.port, port);
+        url = window.location.href.replace(window.location.port, '8080');
     }
     url = url.split('/');
     url = url.join('/');
-    xhttp.open("GET", url+'getTweets?'+query, true);
+    xhttp.open("GET", url+'/getTweets?'+query, true);
     xhttp.send();
 });
 
