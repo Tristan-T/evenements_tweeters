@@ -128,6 +128,11 @@ function displayTweets(location, number, removePrevious = true) {
         e.stopPropagation();
         hoverMarker.remove();
     };
+    const onClick = function (e) {
+        if (e.target.id) {
+            window.open(markersTweets[e.target.id]);
+        }
+    };
     //Use current time as id to refresh only the new tweets
     const id = Date.now();
     let temp = '<div id=' + id + '>';
@@ -159,6 +164,7 @@ function displayTweets(location, number, removePrevious = true) {
     twttr.widgets.load(document.getElementById(id + ''));
     Array.from(document.getElementsByClassName("tweetHover")).forEach(e => e.addEventListener('mouseover', onTweetMouseover));
     Array.from(document.getElementsByClassName("tweetHover")).forEach(e => e.addEventListener('mouseout', onTweetMouseout));
+    Array.from(document.getElementsByClassName("tweetHover")).forEach(e => e.addEventListener('click', onClick));
 }
 
 function moreTweets(){
