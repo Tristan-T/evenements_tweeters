@@ -13,7 +13,6 @@ const MongoClient = require('mongodb').MongoClient;
 const pathToConfig = "./src/Python/config.json";
 let client;
 let realTimeDB, validateDB, rulesDB, dbName;
-let port;
 //Connect to the database using the config file
 fs.readFile(pathToConfig, function (err, file) {
     if (err) throw err;
@@ -22,7 +21,6 @@ fs.readFile(pathToConfig, function (err, file) {
     realTimeDB = parsed.mongodb.collection_real_time_name;
     validateDB = parsed.mongodb.collection_valid_name;
     rulesDB = parsed.mongodb.collection_rules_name;
-    port = parsed.misc.port;
     client = new MongoClient("mongodb+srv://"+encodeURIComponent(parsed.mongodb.username)+":"+encodeURIComponent(parsed.mongodb.password)+"@"+encodeURIComponent(parsed.mongodb.address));
     client.connect();
 
@@ -81,11 +79,6 @@ fs.readFile(pathToConfig, function (err, file) {
                 response=JSON.stringify(await validateTweet(qurl.get('id'), qurl.get('loc'), qurl.get('offTopic'), qurl.has('rule')?qurl.get('rule'):null));
             }
         } else if(validFiles.indexOf(new URL("foo://bar.com"+req.url).pathname) !== -1) {
-            if (req.url.includes('port.js')) {
-                res.writeHead(200, {'Content-Type': extensions[".js"]});
-                res.write("const port="+port);
-                return res.end();
-            }
             let fileName = request.join('/') === '/' ? './src/WebInterface/index.html' : "./src/WebInterface"+new URL("foo://bar.com"+req.url).pathname, ext = path.extname(fileName) === "" ? "html" : path.extname(fileName);
             await fs.readFile(fileName, function (err, data) {
                 if (err) {
@@ -107,7 +100,7 @@ fs.readFile(pathToConfig, function (err, file) {
             res.write(response);
             return res.end();
         }
-    }).listen(port);
+    }).listen(8080);
 
     async function getTweets(types, time) {
         types=types.split(',');
