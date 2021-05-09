@@ -56,10 +56,10 @@ Exécutez la commande :
 8. Lancez votre serveur web, le site web devrait être disponible à l'adresse `localhost:8080`
 
 9. Pour lancer le collecteur de tweets, il vous faut installer Python 3 (v3.8 minimum)
-*Sur Windows :* Vous pouvez installer Python3 via le Windows Store
->Si vous décidez de l'installer via l'installateur classique, il faudra vous diriger dans Paramètres -> Applications -> Alias d'exécution puis décochez Python et Python3
 
-Installez ensuite en sélectionnant ajouter au PATH : https://www.python.org/downloads/release/python-3810/
+*Sur Windows :* Vous pouvez installer Python3 via le Windows Store
+>Si vous décidez de l'installer via l'installateur classique, il faudra vous diriger dans Paramètres -> Applications -> Alias d'exécution puis décochez Python et Python3. Installez ensuite en sélectionnant ajouter au PATH : https://www.python.org/downloads/release/python-3810/
+
 *Sur Ubuntu :* `sudo apt install python3 python3-pip`
 
 10. Il est conseillé de créer un environnement virtuel pour ne pas changer les dépendances de vos autres programmes :
