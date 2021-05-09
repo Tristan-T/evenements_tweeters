@@ -1,4 +1,12 @@
-
+# evenements-tweeter
+evenements-tweeter est une application développée par des étudiants en L3 Informatique dont le but est de géolocaliser en temps réel des catastrophes naturelles.
+---
+### Pré-requis : 
+* Linux (*noyau supportant Python 3*) ou Windows (*7, 8 ou 10*)
+* 200 Mo de mémoire vive disponible
+* 100 Mo d'espace disque libre
+* Une connexion internet stable
+---
 Instructions d'installation (réalisées sous Windows 10 Build 21364.1011 et Ubuntu 20.04 LTS) :
 ---
 0. Si vous n'avez pas d'hébergement pour votre site web il vous faudra installer [Wamp](https://www.wampserver.com/) pour Windows ou [Xampp](https://doc.ubuntu-fr.org/xampp) sur Linux. 
@@ -49,7 +57,8 @@ Exécutez la commande :
 
 9. Pour lancer le collecteur de tweets, il vous faut installer Python 3 (v3.8 minimum)
 *Sur Windows :* Vous pouvez installer Python3 via le Windows Store
-Si vous décidez de l'installer via l'installateur classique, il faudra vous diriger dans Paramètres -> Applications -> Alias d'exécution puis décochez Python et Python3
+>Si vous décidez de l'installer via l'installateur classique, il faudra vous diriger dans Paramètres -> Applications -> Alias d'exécution puis décochez Python et Python3
+
 Installez ensuite en sélectionnant ajouter au PATH : https://www.python.org/downloads/release/python-3810/
 *Sur Ubuntu :* `sudo apt install python3 python3-pip`
 
@@ -63,7 +72,7 @@ Selon votre installation, il vous faudra utiliser python ou python3 pour utilise
 Pour les deux systèmes :
 `pip install -r requirements.txt (Assurez vous que pip3 soit appelé)`
 **/!\ Si une erreur intervient concernant smart-open, vous pouvez l'ignorer /!\\**
-*OPTIONELLEMENT :*
+>*OPTIONELLEMENT :*
 Installez Visual C++ Redistribuable si vous n'avez pas une version plus récente déjà installée :(https://www.microsoft.com/en-in/download/details.aspx?id=48145)
 
 11. Il vous faut ensuite téléchargez le modèle de spaCy et les corpora de NLTK :
