@@ -25,10 +25,10 @@ Pour simplifier la procédure, vous pouvez cloner le repository Github directeme
 	- *password* : Le mot de passe de l'utilisateur
 	- *db_name* : Le nom de votre base de données
 	- *collection_valid_name* : Le nom de la collection contenant les tweets à valider à la main
-    	- *collection_real_time_name* : Le nom de la collection contenant les tweets visibles sur la page web
+	- *collection_real_time_name* : Le nom de la collection contenant les tweets visibles sur la page web
 	- *collection_invalid_name* : Le nom de la collection contenant les tweets invalidés par le programme
-    	- *collection_rules_name* : Le nom de la base contenant les règles d'heuristique pour l'interface de validation
-    	- *optional_URI_parameters*: Paramètres de connexion MongoDB, peut être vide
+	- *collection_rules_name* : Le nom de la base contenant les règles d'heuristique pour l'interface de validation
+	- *optional_URI_parameters*: Paramètres de connexion MongoDB, peut être vide
     	> Pensez à créer les index date dans le sens DESCENDING (-1) des collections real_time et valid
 
 *Pour la section geoname :* Le nom de votre compte geoname, vous pouvez garder la valeur par défaut pour un déploiement de test
