@@ -21,7 +21,7 @@ tweetValide.update_many(
 )
 """
 
-maxi = 0
+"""maxi = 0
 tempDoc = ""
 
 cursor = tweetRealTime.find({})
@@ -34,3 +34,7 @@ for document in cursor:
 
 print("Fichier taille max : ", maxi)
 print(tempDoc)
+"""
+
+tweetRealTime.create_index([("date", -1)], name="date_index")
+tweetValide.create_index([("date", -1)], name="date_index")

@@ -49,11 +49,11 @@ function nextValidation() {
     })
     container.innerHTML+='<div class="checkbox">\n' +
         '        <input class="custom_checkbox_2 location_checkbox" type="checkbox" name="checkbox1" id="none" value="none">\n' +
-        '        <label for="none">Aucun</label><br>\n' +
+        '        <label for="none">Non localisable</label><br>\n' +
         '    </div>';
     container.innerHTML+='<div class="checkbox">\n' +
         '        <input class="custom_checkbox_2 location_checkbox" type="checkbox" name="checkbox1" id="notProposed" value="notProposed">\n' +
-        '        <label for="notProposed">Non Proposé</label><br>\n' +
+        '        <label for="notProposed">Localisation non proposée</label><br>\n' +
         '    </div>';
     container.innerHTML+='<div class="checkbox">\n' +
         '        <input class="custom_checkbox_2" type="checkbox" name="checkbox1" id="offTopic" value="offTopic">\n' +

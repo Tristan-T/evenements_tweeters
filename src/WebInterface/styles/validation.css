@@ -155,6 +155,10 @@ CUSTOM CHECKBOXES
     border-radius: calc(var(--main-text-height) / 2);
 }
 
+.checkbox:hover {
+	background-color:blue;
+}
+
 label {
     user-select: none;
 }

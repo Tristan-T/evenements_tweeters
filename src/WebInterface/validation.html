@@ -17,19 +17,25 @@
             <div id="switchToMain"><a href="./index.html">Revenir à l'interface principale</a></div>
             <div id="tweets_body"></div>
             <div id="tweets_manual">
-                Veritatis ex nam ratione qui vitae doloremque voluptas. Vero molestiae dolor nemo doloremque rerum deleniti voluptatem expedita. Voluptatem deleniti iste iusto quos. Sed maxime reiciendis et consequuntur ad. Ipsum accusamus quo voluptas nihil.
+                <h3>Bienvenue sur l'interface de validation manuelle d'evenements-tweeter</h3>
                 <br>
-                Quibusdam illum sequi velit consequuntur reprehenderit blanditiis. Veniam vitae quo odit provident ipsum sed voluptas. Doloremque aut rem tenetur cupiditate praesentium.
-                <br>
-                <br>
-                Incidunt voluptatem aut vel impedit aut unde fuga. Officiis eos expedita voluptatem sapiente consequatur itaque magnam quia. Facere animi nobis natus amet molestiae autem occaecati cumque. Fuga et aut id unde quibusdam quos. Ea quasi voluptatem est accusantium molestiae omnis. Est quia ut iusto dolorem sint perspiciatis dolorum.
-                <br>
-                Ducimus molestiae ut soluta incidunt qui commodi et deleniti. Tempora ut dolor eius iusto delectus omnis consequatur nostrum. Ut eos dolor occaecati asperiores et non. A quis impedit repellendus eligendi aut.
+                Vous pouvez basculer à tout moment entre le mode simple et le mode avancé de l'interface en cliquant sur le bouton <b>"Mode avancé"</b>.
                 <br>
                 <br>
-                Explicabo expedita id modi est. Doloribus repellendus quia sit est et. Animi inventore dolorem enim dolores unde. Qui perspiciatis magni quas ratione enim omnis. Quis voluptatum voluptatem esse aut voluptas voluptatem voluptatem.
+                <b>Mode simple : </b> <br>
+				Dans le mode simple, plusieurs options s'offrent à vous :<br>
+				- Si un tweet contient des localisations identifiées par l'API, alors vous pouvez sélectionner la localisation de la catastrophe indiquée dans le tweet en haut à gauche.<br>
+				- Si un tweet contient des localisations non identifiées par l'API, vous pouvez sélectionner "Localisation non proposée"<br>
+				- Si un tweet ne contient pas d'information menant à la localisation d'une catastrophe, il vous faudra sélectionner "Non localisable"<br>
+				- Enfin si un tweet ne traite pas d'une catastrophe, sélectionnez "Hors-sujet"<br>
                 <br>
+				<b> Mode avancé : </b> <br>
+				Dans le mode avancé vous pouvez spécifier la règle avec laquelle vous avez identifié que le tweet parlait d'une catastrophe, au sens grammatical, syntaxique ou autre. <br>
+				N'hésitez pas à parcourir la liste des règles déjà présentes avant d'en rajouter une. <br>
+				Vous pouvez utiliser le site <a href="http://explosion.ai/demos/displacy" target="_blank">displacy</a>
                 <br>
+				<br>
+				Une fois que vous êtes satisfait de votre sélection, appuyez sur le bouton suivant pour passer au prochain tweet.
                 <br>
                 <a id="toggleRules" onclick="toggleRules()">Mode avancé</a>
             </div>

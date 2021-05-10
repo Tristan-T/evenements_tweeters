@@ -295,13 +295,13 @@ def spacyDep(doc):
     matcher = DependencyMatcher(nlp.vocab, validate=True)
     pattern = [
       {
-        "RIGHT_ID": "anchor_AUX",       #unique name
-        "RIGHT_ATTRS": {"POS":"AUX"}  #token pattern for disaster
+        "RIGHT_ID": "anchor_AUX",       #Nom unique pour le label d'ancrage
+        "RIGHT_ATTRS": {"POS":"AUX"}
       },
       {
         "LEFT_ID": "anchor_AUX",
         "REL_OP": ">",
-        "RIGHT_ID": "anchor_disaster", ##Il faut aussi vérifier que c'est bien un désastre
+        "RIGHT_ID": "anchor_disaster", 
         "RIGHT_ATTRS": {"DEP":"attr"}
       },
       {
@@ -314,7 +314,7 @@ def spacyDep(doc):
         "LEFT_ID":"AUX_prep",
         "REL_OP" :">",
         "RIGHT_ID":"pobj_prep",
-        "RIGHT_ATTRS": {"DEP":"pobj"} ##Normalement c'est une ville, il faut donc la recup
+        "RIGHT_ATTRS": {"DEP":"pobj"}
       }
     ]
     matcher.add("DISASTER", [pattern])

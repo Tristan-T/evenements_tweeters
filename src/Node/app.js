@@ -122,7 +122,7 @@ fs.readFile(pathToConfig, function (err, file) {
                 query = {$or:[], date:{$gt:new Date(Date.now()-(time*60*1000))}};
                 types.forEach(el => {query.$or.push({disasterType:decodeURIComponent(el)})});
             }
-            return await database.collection(realTimeDB).find(query).sort({date:-1}).project({location: 1, url:1, _id: 0}).toArray();
+            return await database.collection(realTimeDB).find(query).sort({date:-1}).allowDiskUse().project({location: 1, url:1, _id: 0}).toArray();
         }catch(e){
             console.log(e);
         }
@@ -131,7 +131,7 @@ fs.readFile(pathToConfig, function (err, file) {
     async function getTweetsToValidate() {
         try {
             const database = client.db(dbName);
-            return await database.collection(validateDB).find({validated:false}).sort({date:-1}).project({locations : 1, text:1, _id: 1}).toArray();
+            return await database.collection(validateDB).find({validated:false}).sort({date:-1}).allowDiskUse().project({locations : 1, text:1, _id: 1}).toArray();
         }catch(e){
             console.log(e);
         }
